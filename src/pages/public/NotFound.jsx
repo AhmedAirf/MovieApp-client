@@ -1,7 +1,7 @@
 import React from "react";
 
-const whatchlist = () => {
+const NotFound = () => {
   return <div></div>;
 };
 
-export default whatchlist;
+export default NotFound;

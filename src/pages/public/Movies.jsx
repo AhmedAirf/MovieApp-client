@@ -1,7 +1,7 @@
 import React from "react";
 
-const whatchlist = () => {
+const Movies = () => {
   return <div></div>;
 };
 
-export default whatchlist;
+export default Movies;
