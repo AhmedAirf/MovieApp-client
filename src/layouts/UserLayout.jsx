@@ -1,20 +1,25 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import PublicHeader from "../components/common/PublicHeader";
 
-const UserLayout = () => (
-  <div style={{ display: "flex", minHeight: "100vh" }}>
-    {/* User Sidebar */}
-    <aside style={{ width: "200px", background: "#f0f0f0" }}>
-      User Sidebar
-    </aside>
-    <div style={{ flex: 1 }}>
-      {/* User Header */}
-      <header>User Header</header>
-      <main>
+const UserLayout = () => {
+  const theme = useSelector((state) => state.ui.theme);
+
+  return (
+    <div
+      className={`${
+        theme === "dark"
+          ? "dark bg-gray-900 text-white"
+          : "bg-white text-gray-900"
+      } min-h-screen`}
+    >
+      <PublicHeader />
+      <main className="p-4">
         <Outlet />
       </main>
     </div>
-  </div>
-);
+  );
+};
 
 export default UserLayout;

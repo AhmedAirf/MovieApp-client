@@ -134,17 +134,6 @@ const AdminLayout = () => {
                   Admin
                 </Typography>
               </div>
-
-              <Button
-                variant="gradient"
-                color="red"
-                size="sm"
-                className="flex items-center gap-1 lg:gap-2 shadow-lg shadow-red-900/20 hover:shadow-red-900/40 text-xs lg:text-sm"
-                onClick={() => console.log("Logout")}
-              >
-                <ArrowLeftOnRectangleIcon className="h-3 w-3 lg:h-4 lg:w-4" />
-                <span className="hidden sm:inline">Logout</span>
-              </Button>
             </div>
           </div>
         </header>

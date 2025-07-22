@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   error: null,
-  theme: "light", // or "dark"
+  theme: "dark", // or "dark"
   sidebarOpen: false,
   searchQuery: "",
   filters: {
