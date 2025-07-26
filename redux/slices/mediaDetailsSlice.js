@@ -5,6 +5,8 @@ import {
   fetchMediaVideos,
   fetchMediaImages,
   fetchMediaRecommendations,
+  fetchPersonDetails,
+  fetchPersonCredits,
 } from "../../src/utils/movieApi";
 
 // Async thunks
@@ -44,6 +46,22 @@ export const fetchMediaRecommendationsAsync = createAsyncThunk(
   "mediaDetails/fetchMediaRecommendations",
   async ({ type, id }) => {
     const response = await fetchMediaRecommendations(type, id);
+    return response;
+  }
+);
+
+export const fetchPersonDetailsAsync = createAsyncThunk(
+  "mediaDetails/fetchPersonDetails",
+  async (id) => {
+    const response = await fetchPersonDetails(id);
+    return response;
+  }
+);
+
+export const fetchPersonCreditsAsync = createAsyncThunk(
+  "mediaDetails/fetchPersonCredits",
+  async (id) => {
+    const response = await fetchPersonCredits(id);
     return response;
   }
 );
@@ -109,6 +127,14 @@ const mediaDetailsSlice = createSlice({
       // Recommendations
       .addCase(fetchMediaRecommendationsAsync.fulfilled, (state, action) => {
         state.recommendations = action.payload;
+      })
+      // Person Details
+      .addCase(fetchPersonDetailsAsync.fulfilled, (state, action) => {
+        state.currentPerson = action.payload;
+      })
+      // Person Credits
+      .addCase(fetchPersonCreditsAsync.fulfilled, (state, action) => {
+        state.credits = action.payload;
       });
   },
 });

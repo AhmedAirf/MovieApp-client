@@ -17,6 +17,7 @@ import Watchlist from "./src/pages/user/whatchlist";
 import MediaDetails from "./src/pages/user/MediaDetails";
 import Dashboard from "./src/pages/admin/Dashboard";
 import ManageUsers from "./src/pages/admin/ManageUsers";
+import PersonDetails from "./src/pages/user/PersonDetails";
 // Route guards (to be implemented)
 import ProtectedRoutes from "./src/components/common/ProtectedRoutes";
 
@@ -43,7 +44,8 @@ const AppRoutes = () => (
     >
       <Route path="/profile" element={<Profile />} />
       <Route path="/watchlist" element={<Watchlist />} />
-      <Route path="/media/:id" element={<MediaDetails />} />
+      <Route path="/media/:type/:id" element={<MediaDetails />} />
+      <Route path="/person/:id" element={<PersonDetails />} />
     </Route>
 
     {/* Admin routes (protected, admin only) */}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTvShows, getGenres } from "../../../redux/slices/mediaSlice";
-import MovieCard from "../../components/common/MovieCard";
+import MediaCard from "../../components/common/MediaCard";
 import Loader from "../../components/common/loader";
 import Pagination from "../../components/common/Pagination";
 import MediaCarousel from "./../../components/common/MediaCarousel";
@@ -57,7 +57,12 @@ const Tv = () => {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {pagedTvShows?.map((tvShow, index) => (
-              <MovieCard key={index} movie={tvShow} genres={genres} />
+              <MediaCard
+                key={index}
+                media={tvShow}
+                genres={genres}
+                media_type="tv"
+              />
             ))}
           </div>
           {/* Pagination */}
