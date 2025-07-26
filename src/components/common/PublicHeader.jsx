@@ -177,17 +177,29 @@ const PublicHeader = () => {
         {/* Sidebar content here */}
         <ul>
           <li className="mb-2">
-            <Link to="/" onClick={() => dispatch(toggleSidebar())}>
+            <Link
+              to="/"
+              onClick={() => dispatch(toggleSidebar())}
+              className="hover:text-red-500"
+            >
               Home
             </Link>
           </li>
           <li className="mb-2">
-            <Link to="/movies" onClick={() => dispatch(toggleSidebar())}>
+            <Link
+              to="/movies"
+              onClick={() => dispatch(toggleSidebar())}
+              className="hover:text-red-500"
+            >
               Movies
             </Link>
           </li>
           <li className="mb-2">
-            <Link to="/tv" onClick={() => dispatch(toggleSidebar())}>
+            <Link
+              to="/tv"
+              onClick={() => dispatch(toggleSidebar())}
+              className="hover:text-red-500"
+            >
               TV Shows
             </Link>
           </li>
@@ -202,12 +214,12 @@ const PublicHeader = () => {
         as="li"
         variant="small"
         color="white"
-        className="p-1 font-medium hover:text-red-500 transition-colors"
+        className="p-1 font-medium hover:text-red-500 transition-colors "
       >
         <Link
           to="/"
           onClick={() => setOpenNav(false)}
-          className="flex items-center"
+          className="flex items-center focus:text-red-500"
         >
           Home
         </Link>
@@ -216,12 +228,12 @@ const PublicHeader = () => {
         as="li"
         variant="small"
         color="white"
-        className="p-1 font-medium hover:text-red-500 transition-colors"
+        className="p-1 font-medium hover:text-red-500 transition-colors "
       >
         <Link
           to="/movies"
           onClick={() => setOpenNav(false)}
-          className="flex items-center"
+          className="flex items-center focus:text-red-500"
         >
           Movies
         </Link>
@@ -235,7 +247,7 @@ const PublicHeader = () => {
         <Link
           to="/tv"
           onClick={() => setOpenNav(false)}
-          className="flex items-center"
+          className="flex items-center focus:text-red-500"
         >
           TV Shows
         </Link>

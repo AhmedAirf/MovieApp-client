@@ -1,51 +1,66 @@
 import React from "react";
 
-const MovieCard = () => {
-  // Mock movie data
-  const movie = {
-    title: "Stranger Things",
-    year: 2023,
-    rating: "TV-14",
-    duration: "2h 15m",
-    genres: ["Sci-Fi", "Horror", "Drama"],
-    description:
-      "When a young boy vanishes, a small town uncovers a mystery involving secret experiments.",
-    imageUrl: "https://via.placeholder.com/300x450?text=Movie+Poster",
-  };
+const MovieCard = ({ movie, genres = [], className = "" }) => {
+  if (!movie) return null;
+
+  // Fix: Use TMDB image base URL if poster_path exists
+  const posterUrl =
+    movie.imageUrl ||
+    (movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : "https://via.placeholder.com/300x450?text=Movie+Poster");
+
+  // Map genre_ids to genre names
+  let genreNames = [];
+  if (Array.isArray(movie.genre_ids) && genres && genres.length > 0) {
+    genreNames = movie.genre_ids
+      .map((id) => {
+        const found = genres.find((g) => g.id === id);
+        return found ? found.name : null;
+      })
+      .filter(Boolean);
+  } else if (
+    Array.isArray(movie.genres) &&
+    typeof movie.genres[0] === "string"
+  ) {
+    genreNames = movie.genres;
+  }
 
   return (
-    <div className="relative group overflow-hidden rounded-lg shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 hover:z-10 w-full max-w-xs mx-auto">
+    <div
+      className={`relative group overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:z-10 w-full ${className}`}
+    >
       {/* Movie Poster */}
       <div className="relative pb-[150%]">
         {" "}
-        {/* 2:3 aspect ratio container */}
+        {/* 2:3 aspect ratio */}
         <img
-          src={movie.imageUrl}
-          alt={movie.title}
+          src={posterUrl}
+          alt={movie.title || movie.name}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
-        {/* Top Info Overlay */}
-        <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Top Info Overlay - Only visible on hover */}
+        <div className="absolute top-0 left-0 right-0 p-2 bg-gradient-to-b from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex justify-between items-center">
-            <span className="text-green-500 font-bold text-sm">98% Match</span>
-            <div className="flex space-x-2">
-              <span className="text-xs bg-gray-800 text-gray-300 px-1.5 py-0.5 rounded border border-gray-700">
-                {movie.rating}
+            <div className="flex space-x-1">
+              <span className="text-[10px] sm:text-xs bg-gray-800 text-gray-300 px-1 py-0.5 rounded border border-gray-700">
+                {movie.rating || movie.vote_average || "NR"}
               </span>
-              <span className="text-xs bg-gray-800 text-gray-300 px-1.5 py-0.5 rounded border border-gray-700">
-                {movie.duration}
+              <span className="text-[10px] sm:text-xs bg-gray-800 text-gray-300 px-1 py-0.5 rounded border border-gray-700">
+                {movie.original_language}
               </span>
             </div>
           </div>
         </div>
-        {/* Play Button */}
+        {/* Play Button - Only visible on hover */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 shadow-lg transform transition hover:scale-110">
+          <button className="bg-red-600 hover:bg-red-700 text-white rounded-full p-2 sm:p-3 shadow-lg transform transition hover:scale-110">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-6 w-6 sm:h-8 sm:w-8"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -57,19 +72,25 @@ const MovieCard = () => {
             </svg>
           </button>
         </div>
-        {/* Bottom Info Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Bottom Info Overlay - Only visible on hover */}
+        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex justify-between items-end">
             <div>
-              <h3 className="text-white font-bold text-lg">{movie.title}</h3>
-              <p className="text-gray-300 text-sm mt-1">
-                {movie.year} | {movie.genres.join(", ")}
+              <h3 className="text-white font-bold text-sm sm:text-base md:text-lg line-clamp-1">
+                {movie.title || movie.name}
+              </h3>
+              <p className="text-gray-300 text-[10px] sm:text-xs mt-0.5">
+                {movie.year ||
+                  (movie.release_date && movie.release_date.slice(0, 4)) ||
+                  ""}{" "}
+                {" | "}
+                {genreNames.length > 0 ? genreNames.slice(0, 2).join(", ") : ""}
               </p>
             </div>
-            <button className="bg-gray-800/80 hover:bg-gray-700/90 text-white rounded-full p-2">
+            <button className="bg-gray-800/80 hover:bg-gray-700/90 text-white rounded-full p-1 sm:p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-4 w-4 sm:h-5 sm:w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -82,15 +103,10 @@ const MovieCard = () => {
             </button>
           </div>
 
-          <p className="text-gray-300 text-xs mt-2 line-clamp-2">
-            {movie.description}
+          <p className="text-gray-300 text-[10px] sm:text-xs mt-1 line-clamp-2">
+            {movie.description || movie.overview}
           </p>
         </div>
-      </div>
-
-      {/* Badge Ribbon */}
-      <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">
-        NEW
       </div>
     </div>
   );

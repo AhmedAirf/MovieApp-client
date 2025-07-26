@@ -20,6 +20,7 @@ import {
   FilmIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import Loader from "../../components/common/loader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -36,19 +37,11 @@ const Dashboard = () => {
   };
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center h-full bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-full bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (

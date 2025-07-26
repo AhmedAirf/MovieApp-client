@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 export async function fetchAllMovies() {
   const res = await fetch(`${BASE_URL}/media/movies`);
@@ -87,6 +88,18 @@ export async function fetchPersonDetails(id) {
 export async function fetchPersonCredits(id) {
   const res = await fetch(`${BASE_URL}/media/person/${id}/credits`);
   if (!res.ok) throw new Error("Failed to fetch person credits");
+  return res.json();
+}
+
+export async function fetchAiringToday() {
+  const res = await fetch(`${BASE_URL}/media/airing-today/tv`);
+  if (!res.ok) throw new Error("Faild to fetch Airing Today ");
+  return res.json();
+}
+
+export async function fetchOnTheAir() {
+  const res = await fetch(`${BASE_URL}/media/on-the-air/tv`);
+  if (!res.ok) throw new Error("Faild to fetch On The Air Tv");
   return res.json();
 }
 

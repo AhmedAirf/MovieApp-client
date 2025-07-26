@@ -2,17 +2,14 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout, selectUser } from "../../../redux/slices/authslice";
+import Loader from "../../components/common/loader";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   const handleLogout = () => {
