@@ -68,6 +68,7 @@ export const fetchPersonCreditsAsync = createAsyncThunk(
 
 const initialState = {
   currentMedia: null,
+  currentPerson: null,
   credits: {
     cast: [],
     crew: [],
@@ -88,6 +89,7 @@ const mediaDetailsSlice = createSlice({
   reducers: {
     clearMediaDetails: (state) => {
       state.currentMedia = null;
+      state.currentPerson = null;
       state.credits = { cast: [], crew: [] };
       state.videos = [];
       state.images = { backdrops: [], posters: [] };
@@ -129,8 +131,17 @@ const mediaDetailsSlice = createSlice({
         state.recommendations = action.payload;
       })
       // Person Details
+      .addCase(fetchPersonDetailsAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchPersonDetailsAsync.fulfilled, (state, action) => {
+        state.loading = false;
         state.currentPerson = action.payload;
+      })
+      .addCase(fetchPersonDetailsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
       // Person Credits
       .addCase(fetchPersonCreditsAsync.fulfilled, (state, action) => {

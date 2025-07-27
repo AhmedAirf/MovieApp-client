@@ -476,42 +476,77 @@ const MediaDetails = () => {
           )}
 
           {activeTab === "cast" && (
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-6">
+            <div className="mt-6">
+              <h3 className="text-2xl font-bold mb-6 text-primary dark:text-primary-light">
                 Cast
               </h3>
               {getCast().length > 0 ? (
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-4">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
                   {getCast().map((person) => (
                     <Link
                       key={person.id}
                       to={`/person/${person.id}`}
-                      className={`p-2 md:p-3 rounded transition-transform hover:scale-105 cursor-pointer ${
-                        theme === "dark"
-                          ? "bg-gray-800 hover:bg-gray-700"
-                          : "bg-white shadow hover:shadow-lg"
-                      }`}
+                      className="group relative overflow-hidden rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl"
                     >
-                      <img
-                        src={
-                          person.profile_path
-                            ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
-                            : "/placeholder-person.jpg"
-                        }
-                        alt={person.name}
-                        className="w-full h-24 md:h-32 object-cover rounded mb-1 md:mb-2"
+                      <div
+                        className={`relative aspect-[2/3] rounded-lg overflow-hidden ${
+                          theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+                        }`}
+                      >
+                        <img
+                          src={
+                            person.profile_path
+                              ? `https://image.tmdb.org/t/p/w300${person.profile_path}`
+                              : "/placeholder-person.jpg"
+                          }
+                          alt={person.name}
+                          className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-90"
+                          loading="lazy"
+                        />
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-t ${
+                            theme === "dark"
+                              ? "from-gray-900/70 to-gray-800/30"
+                              : "from-gray-900/60 to-gray-400/30"
+                          }`}
+                        />
+                      </div>
+
+                      <div className="absolute bottom-0 left-0 right-0 p-3 pt-6">
+                        <h4
+                          className={`font-bold text-sm truncate ${
+                            theme === "dark" ? "text-white" : "text-black"
+                          }`}
+                        >
+                          {person.name}
+                        </h4>
+                        <p
+                          className={`text-xs truncate ${
+                            theme === "dark" ? "text-gray-300" : "text-white"
+                          }`}
+                        >
+                          {person.character}
+                        </p>
+                      </div>
+
+                      <div
+                        className={`absolute inset-0 border-2 rounded-lg border-transparent group-hover:border-${
+                          theme === "dark" ? "primary-light" : "primary"
+                        } transition-all duration-300`}
                       />
-                      <h4 className="font-semibold text-xs md:text-sm line-clamp-2">
-                        {person.name}
-                      </h4>
-                      <p className="text-xs text-gray-500 line-clamp-2">
-                        {person.character}
-                      </p>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No cast information available.</p>
+                <div
+                  className={`p-6 rounded-lg text-center ${
+                    theme === "dark"
+                      ? "bg-gray-800 text-gray-400"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                >
+                  No cast information available
+                </div>
               )}
             </div>
           )}

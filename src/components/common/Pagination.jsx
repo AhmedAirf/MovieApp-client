@@ -49,7 +49,10 @@ const Pagination = ({ page, setPage, totalPages }) => {
       </IconButton>
       {pageNumbers.map((num, idx) =>
         num === "..." ? (
-          <span key={idx} className="px-2 text-gray-400 select-none">
+          <span
+            key={`ellipsis-${idx}`}
+            className="px-2 text-gray-400 select-none"
+          >
             ...
           </span>
         ) : (
