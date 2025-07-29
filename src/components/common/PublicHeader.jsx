@@ -342,7 +342,7 @@ const PublicHeader = (transparent = false) => {
       {sidebar}
       {showSearch && mobileSearchOverlay}
       <Navbar
-        className={` max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 ${
+        className={` max-w-full rounded-none border-none px-4 py-2 lg:px-8 lg:py-4 ${
           transparent
             ? "bg-transparent backdrop-blur-none border-b border-white/20"
             : theme === "dark"
