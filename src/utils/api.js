@@ -19,7 +19,12 @@ export async function loginUser(credentials) {
     headers: getHeaders(),
     body: JSON.stringify(credentials),
   });
-  if (!res.ok) throw new Error("Login failed");
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Login failed: ${res.status} ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -29,7 +34,13 @@ export async function registerUser(userData) {
     headers: getHeaders(),
     body: JSON.stringify(userData),
   });
-  if (!res.ok) throw new Error("Registration failed");
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Registration failed: ${res.status} ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -37,7 +48,29 @@ export async function fetchUserProfile() {
   const res = await fetch(`${BASE_URL}/users/profile`, {
     headers: getHeaders(),
   });
-  if (!res.ok) throw new Error("Failed to fetch profile");
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to fetch profile: ${res.status} ${res.statusText}`
+    );
+  }
+  return res.json();
+}
+
+export async function updateUserProfile(profileData) {
+  const res = await fetch(`${BASE_URL}/users/profile`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify(profileData),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to update profile: ${res.status} ${res.statusText}`
+    );
+  }
   return res.json();
 }
 

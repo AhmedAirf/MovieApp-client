@@ -24,7 +24,7 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
 
   return (
     <div
-      className={`relative h-[65vh] w-full overflow-hidden ${
+      className={`relative w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] overflow-hidden ${
         theme === "dark" ? "" : "bg-gray-100"
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -41,22 +41,28 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
                 : "opacity-0 pointer-events-none"
             }`}
           >
-            {/* Gradient overlays */}
+            {/* Enhanced gradient overlay - stronger at top for header contrast */}
             <div
               className={`absolute inset-0 z-10 ${
                 theme === "dark"
-                  ? "bg-gradient-to-t from-black via-black/30 to-transparent"
-                  : "bg-gradient-to-t from-gray-300/0 via-gray-200/0 to-transparent"
+                  ? "bg-gradient-to-t from-black via-black/40 to-transparent"
+                  : "bg-transparent"
+              }`}
+            ></div>
+            <div
+              className={`absolute top-0 h-32 w-full z-10 ${
+                theme === "dark"
+                  ? "bg-gradient-to-b from-black to-transparent"
+                  : "bg-transparent"
               }`}
             ></div>
             <div
               className={`absolute inset-0 z-10 ${
                 theme === "dark"
                   ? "bg-gradient-to-r from-black via-black/40 to-transparent"
-                  : "bg-gradient-to-r from-gray-400/0 via-gray-200/0 to-transparent"
+                  : "bg-transparent"
               }`}
             ></div>
-
             {/* Background image */}
             <img
               src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}

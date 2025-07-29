@@ -32,6 +32,7 @@ function ProfileMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(selectAuth);
+  const theme = useSelector((state) => state.ui.theme);
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -76,27 +77,41 @@ function ProfileMenu() {
           />
         </Button>
       </MenuHandler>
-      <MenuList className="p-1 bg-gray-900 border-gray-800">
+      <MenuList
+        className={`p-1 ${
+          theme === "dark"
+            ? "bg-gray-900 border-gray-800"
+            : "bg-white border-gray-200 shadow-lg"
+        }`}
+      >
         <MenuItem
           onClick={handleProfile}
-          className="flex items-center gap-2 rounded hover:bg-gray-800"
+          className={`flex items-center gap-2 rounded ${
+            theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+          }`}
         >
           <Typography
             as="span"
             variant="small"
-            className="font-normal text-white"
+            className={`font-normal ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
           >
             My Profile
           </Typography>
         </MenuItem>
         <MenuItem
           onClick={handleWatchlist}
-          className="flex items-center gap-2 rounded hover:bg-gray-800"
+          className={`flex items-center gap-2 rounded ${
+            theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+          }`}
         >
           <Typography
             as="span"
             variant="small"
-            className="font-normal text-white"
+            className={`font-normal ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
           >
             My List
           </Typography>
@@ -104,12 +119,16 @@ function ProfileMenu() {
         {user && user.role === "admin" && (
           <MenuItem
             onClick={handleDashboard}
-            className="flex items-center gap-2 rounded hover:bg-gray-800"
+            className={`flex items-center gap-2 rounded ${
+              theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+            }`}
           >
             <Typography
               as="span"
               variant="small"
-              className="font-normal text-white"
+              className={`font-normal ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
             >
               Dashboard
             </Typography>
@@ -117,7 +136,9 @@ function ProfileMenu() {
         )}
         <MenuItem
           onClick={handleSignOut}
-          className="flex items-center gap-2 rounded hover:bg-red-900/50"
+          className={`flex items-center gap-2 rounded ${
+            theme === "dark" ? "hover:bg-red-900/50" : "hover:bg-red-50"
+          }`}
         >
           <Typography
             as="span"
@@ -133,7 +154,7 @@ function ProfileMenu() {
   );
 }
 
-const PublicHeader = () => {
+const PublicHeader = (transparent = false) => {
   const [openNav, setOpenNav] = useState(false);
   const { isAuthenticated } = useSelector(selectAuth);
   const [showSearch, setShowSearch] = useState(false);
@@ -213,8 +234,8 @@ const PublicHeader = () => {
       <Typography
         as="li"
         variant="small"
-        color="white"
-        className="p-1 font-medium hover:text-red-500 transition-colors "
+        color={theme === "dark" ? "white" : "black"}
+        className="p-1 font-medium hover:text-red-500 transition-colors"
       >
         <Link
           to="/"
@@ -227,8 +248,8 @@ const PublicHeader = () => {
       <Typography
         as="li"
         variant="small"
-        color="white"
-        className="p-1 font-medium hover:text-red-500 transition-colors "
+        color={theme === "dark" ? "white" : "black"}
+        className="p-1 font-medium hover:text-red-500 transition-colors"
       >
         <Link
           to="/movies"
@@ -241,7 +262,7 @@ const PublicHeader = () => {
       <Typography
         as="li"
         variant="small"
-        color="white"
+        color={theme === "dark" ? "white" : "black"}
         className="p-1 font-medium hover:text-red-500 transition-colors"
       >
         <Link
@@ -259,7 +280,11 @@ const PublicHeader = () => {
     <div className="relative flex items-center w-full lg:w-auto">
       <input
         type="text"
-        className="border border-gray-700 bg-gray-900 text-white rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-red-500 w-full lg:w-64 transition-all duration-200"
+        className={`border rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-red-500 w-full lg:w-64 transition-all duration-200 ${
+          theme === "dark"
+            ? "border-gray-700 bg-gray-900 text-white"
+            : "border-gray-300 bg-white text-gray-900"
+        }`}
         placeholder="Search movies, series..."
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
@@ -269,7 +294,9 @@ const PublicHeader = () => {
         variant="text"
         size="sm"
         aria-label="Close search"
-        className="absolute right-1 text-white"
+        className={`absolute right-1 ${
+          theme === "dark" ? "text-white" : "text-gray-600"
+        }`}
         onClick={() => setShowSearch(false)}
       >
         <XMarkIcon className="h-5 w-5" />
@@ -284,7 +311,11 @@ const PublicHeader = () => {
         <div className="relative flex items-center w-full">
           <input
             type="text"
-            className="border border-gray-700 bg-gray-900 text-white rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-lg"
+            className={`border rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-lg ${
+              theme === "dark"
+                ? "border-gray-700 bg-gray-900 text-white"
+                : "border-gray-300 bg-white text-gray-900"
+            }`}
             placeholder="Search movies, series..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -294,7 +325,9 @@ const PublicHeader = () => {
             variant="text"
             size="lg"
             aria-label="Close search"
-            className="absolute right-2 text-white"
+            className={`absolute right-2 ${
+              theme === "dark" ? "text-white" : "text-gray-600"
+            }`}
             onClick={() => setShowSearch(false)}
           >
             <XMarkIcon className="h-7 w-7" />
@@ -307,25 +340,35 @@ const PublicHeader = () => {
   return (
     <>
       {sidebar}
-      {/* Mobile search overlay */}
       {showSearch && mobileSearchOverlay}
       <Navbar
-        className={`sticky top-0 z-40 max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 bg-black/85 backdrop-blur-sm border-b border-gray-900 ${
+        className={` max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 ${
+          transparent
+            ? "bg-transparent backdrop-blur-none border-b border-white/20"
+            : theme === "dark"
+            ? "bg-black/85 backdrop-blur-sm border-b border-gray-900"
+            : "bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm"
+        } ${
           showSearch
             ? "lg:opacity-100 opacity-30 pointer-events-none select-none"
             : ""
         }`}
+        fullWidth
       >
         <div className="flex items-center justify-between text-blue-gray-900">
           <div className="flex items-center gap-4">
             {/* Sidebar toggle button */}
             <IconButton
               variant="text"
-              color="white"
+              color={theme === "dark" ? "white" : "black"}
               className="lg:hidden"
               onClick={() => dispatch(toggleSidebar())}
             >
-              <Bars3Icon className="h-6 w-6" />
+              <Bars3Icon
+                className={`h-6 w-6 ${
+                  theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
+              />
             </IconButton>
             <div className="flex items-center ">
               <FilmIcon className="h-8 w-8 text-red-500 mr-2" />
@@ -351,7 +394,7 @@ const PublicHeader = () => {
           <div className="flex items-center gap-4">
             {/* Theme toggle icon */}
             <IconButton
-              color="white"
+              color={theme === "dark" ? "white" : "black"}
               variant="text"
               size="sm"
               aria-label="Toggle theme"
@@ -370,7 +413,7 @@ const PublicHeader = () => {
                 searchInput
               ) : (
                 <IconButton
-                  color="white"
+                  color={theme === "dark" ? "white" : "black"}
                   variant="text"
                   size="sm"
                   aria-label="Search"
@@ -384,7 +427,7 @@ const PublicHeader = () => {
             {/* Mobile search icon */}
             <div className="lg:hidden">
               <IconButton
-                color="white"
+                color={theme === "dark" ? "white" : "black"}
                 variant="text"
                 size="sm"
                 aria-label="Search"

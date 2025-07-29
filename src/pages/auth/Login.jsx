@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../../redux/slices/authslice";
 import GridMotion from "../../blocks/Backgrounds/GridMotion/GridMotion";
 import { Input, Typography } from "@material-tailwind/react";
 import { EyeIcon, FilmIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { getAllMovies } from "../../../redux/slices/mediaSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,13 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error: authError } = useSelector((state) => state.auth);
+  const { data: movies } = useSelector((state) => state.media.movies);
+
+  useEffect(() => {
+    if (!movies || movies.length === 0) {
+      dispatch(getAllMovies());
+    }
+  }, [dispatch, movies]);
 
   const validate = () => {
     const newErrors = {
@@ -77,37 +85,13 @@ const Login = () => {
     }
   };
 
-  // Sample movie poster URLs (replace with your own or fetch dynamically)
-  const posterUrls = [
-    "https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg", // Wonder Woman 1984
-    "https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg", // Soul
-    "https://image.tmdb.org/t/p/w500/9kg73Mg8WJKlB9Y2SAJzeDKAnuB.jpg", // The Croods: A New Age
-    "https://image.tmdb.org/t/p/w500/6agKYU5IQFpuDyUYPu39w7UCRrJ.jpg", // Monster Hunter
-    "https://image.tmdb.org/t/p/w500/5KCVkau1HEl7ZzfPsKAPM0sMiKc.jpg", // The Midnight Sky
-    "https://image.tmdb.org/t/p/w500/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg", // The Empty Man
-    "https://image.tmdb.org/t/p/w500/4n8QNNdk4BOX9Dslfbz5Dy6j1HK.jpg", // The New Mutants
-    "https://image.tmdb.org/t/p/w500/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg", // Rogue
-    "https://image.tmdb.org/t/p/w500/riYInlsq2kf1AWoGm80JQW5dLKp.jpg", // Tenet
-    "https://image.tmdb.org/t/p/w500/7prYzufdIOy1KCTZKVWpjBFqqNr.jpg", // Greenland
-    "https://image.tmdb.org/t/p/w500/6wxfWZxQcuv2QgxIQKj0eYTdKTv.jpg", // Fatman
-    "https://image.tmdb.org/t/p/w500/5KmhjlR5CEarB8mKtpjcjHRYIu9.jpg", // The Call
-    "https://image.tmdb.org/t/p/w500/4ZocdxnOO6q2UbdKye2wgofLFhB.jpg", // The Witches
-    "https://image.tmdb.org/t/p/w500/6zbKgwgaaCyyBXE4Sun4oWQfQmi.jpg", // Honest Thief
-    "https://image.tmdb.org/t/p/w500/9hlqmYqRRpNpB4zA5iW2D2xZi1F.jpg", // The War with Grandpa
-    "https://image.tmdb.org/t/p/w500/6TPZSJ06OEXeelx1U1VIAt0j9Ry.jpg", // Jiu Jitsu
-    "https://image.tmdb.org/t/p/w500/1UCOF11QCw8kcqvce8LKOO6pimh.jpg", // Vanguard
-    "https://image.tmdb.org/t/p/w500/4n8QNNdk4BOX9Dslfbz5Dy6j1HK.jpg", // The New Mutants (repeat for more items)
-    "https://image.tmdb.org/t/p/w500/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg",
-    "https://image.tmdb.org/t/p/w500/riYInlsq2kf1AWoGm80JQW5dLKp.jpg",
-    "https://image.tmdb.org/t/p/w500/7prYzufdIOy1KCTZKVWpjBFqqNr.jpg",
-    "https://image.tmdb.org/t/p/w500/6wxfWZxQcuv2QgxIQKj0eYTdKTv.jpg",
-    "https://image.tmdb.org/t/p/w500/5KmhjlR5CEarB8mKtpjcjHRYIu9.jpg",
-    "https://image.tmdb.org/t/p/w500/4ZocdxnOO6q2UbdKye2wgofLFhB.jpg",
-    "https://image.tmdb.org/t/p/w500/6zbKgwgaaCyyBXE4Sun4oWQfQmi.jpg",
-    "https://image.tmdb.org/t/p/w500/9hlqmYqRRpNpB4zA5iW2D2xZi1F.jpg",
-    "https://image.tmdb.org/t/p/w500/6TPZSJ06OEXeelx1U1VIAt0j9Ry.jpg",
-    "https://image.tmdb.org/t/p/w500/1UCOF11QCw8kcqvce8LKOO6pimh.jpg",
-  ];
+  const posterUrls =
+    movies && movies.length > 0
+      ? movies
+          .filter((movie) => movie.poster_path)
+          .slice(0, 30)
+          .map((movie) => `https://image.tmdb.org/t/p/w500${movie.poster_path}`)
+      : [];
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">

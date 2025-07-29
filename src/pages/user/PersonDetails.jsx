@@ -6,6 +6,7 @@ import {
   fetchPersonCreditsAsync,
   clearMediaDetails,
 } from "../../../redux/slices/mediaDetailsSlice";
+import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 import MediaCard from "../../components/common/MediaCard";
 import Loader from "../../components/common/loader";
 import Pagination from "../../components/common/Pagination";
@@ -22,6 +23,7 @@ const PersonDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const { currentPerson, credits, loading, error } = useSelector(
     (state) => state.mediaDetails
   );
@@ -441,6 +443,7 @@ const PersonDetails = () => {
                             }
                             theme={theme}
                             className="w-full"
+                            isAuthenticated={isAuthenticated}
                           />
                         </div>
                       ))}
@@ -536,6 +539,7 @@ const PersonDetails = () => {
                           }
                           theme={theme}
                           className="w-full"
+                          isAuthenticated={isAuthenticated}
                         />
                         {work.character && (
                           <p className="text-xs text-gray-500 mt-1 px-1 line-clamp-2">
@@ -587,6 +591,7 @@ const PersonDetails = () => {
                           }
                           theme={theme}
                           className="w-full mb-2"
+                          isAuthenticated={isAuthenticated}
                         />
                         <p className="text-xs md:text-sm text-gray-500 font-medium">
                           {work.job}

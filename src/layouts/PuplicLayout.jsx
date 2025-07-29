@@ -6,7 +6,9 @@ import PublicFooter from "./publicFooter";
 
 const PuplicLayout = () => {
   const location = useLocation();
-  const hideHeader = ["/login", "/register"].includes(location.pathname);
+  const hideHeader = ["/login", "/register", "/movies", "/tv"].includes(
+    location.pathname
+  );
   const hideFooter = ["/login", "/register"].includes(location.pathname);
   const theme = useSelector((state) => state.ui.theme);
 
