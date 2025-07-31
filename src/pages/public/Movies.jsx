@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMovies, getGenres } from "../../../redux/slices/mediaSlice";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 import MediaCard from "../../components/common/MediaCard";
-import Loader from "../../components/common/loader";
+import Loader from "../../components/common/Loader";
 import Pagination from "../../components/common/Pagination";
 import MediaCarousel from "./../../components/common/MediaCarousel";
 import PublicHeader from "../../components/common/PublicHeader";
@@ -55,7 +55,7 @@ const Movies = () => {
       }`}
     >
       {/* Hero section with adjusted height */}
-      <div className="absolute top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0">
+      <div className=" top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0 relative">
         <MediaCarousel items={movies} mediaType="movie" theme={theme} />
       </div>
 
@@ -65,7 +65,7 @@ const Movies = () => {
       </div>
 
       {/* Content Area - Starts below hero */}
-      <div className="relative pt-[45vh] md:pt-[70vh] lg:pt-[85vh] xl:pt-[90vh] z-30">
+      <div className="relative    ">
         <div className="container mx-auto px-4 py-8">
           <h2
             className={`text-xl md:text-2xl font-bold mb-6 ${

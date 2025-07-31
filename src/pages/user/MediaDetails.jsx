@@ -19,11 +19,13 @@ import {
   FilmIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
+import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 
 const MediaDetails = () => {
   const { id, type } = useParams();
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const {
     currentMedia,
     credits,
@@ -154,11 +156,36 @@ const MediaDetails = () => {
                 : "/placeholder-backdrop.jpg"
             }
             alt={getMediaTitle()}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
+            style={{
+              objectPosition: "center 20%",
+              transform: "scale(1.1)",
+            }}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/placeholder-backdrop.jpg";
+            }}
           />
+          {/* Enhanced gradient overlays */}
           <div
             className={`absolute inset-0 ${
-              theme === "dark" ? "bg-black/60" : "bg-white/60"
+              theme === "dark"
+                ? "bg-gradient-to-t from-black via-black/40 to-transparent"
+                : "bg-gradient-to-t from-white via-white/40 to-transparent"
+            }`}
+          ></div>
+          <div
+            className={`absolute inset-0 ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-black via-black/30 to-transparent"
+                : "bg-gradient-to-r from-white via-white/30 to-transparent"
+            }`}
+          ></div>
+          <div
+            className={`absolute top-0 h-32 w-full ${
+              theme === "dark"
+                ? "bg-gradient-to-b from-black to-transparent"
+                : "bg-gradient-to-b from-white to-transparent"
             }`}
           ></div>
         </div>
@@ -689,6 +716,7 @@ const MediaDetails = () => {
                       media={item}
                       media_type={type}
                       className="w-full"
+                      isAuthenticated={isAuthenticated}
                     />
                   ))}
                 </div>

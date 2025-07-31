@@ -9,11 +9,11 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
     if (isHovered) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % Math.min(items.length, 5));
+      setCurrentIndex((prev) => (prev + 1) % Math.min(items?.length, 5));
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isHovered, items.length]);
+  }, [isHovered, items?.length]);
 
   const goToSlide = (index) => {
     setCurrentIndex(index);

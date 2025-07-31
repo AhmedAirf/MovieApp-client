@@ -74,7 +74,7 @@ export async function fetchPopularMedia(type) {
 }
 
 export async function fetchTopRatedMedia(type) {
-  const res = await fetch(`${BASE_URL}/media/${type}/top-rated`);
+  const res = await fetch(`${BASE_URL}/media/${type}/top_rated`);
   if (!res.ok) throw new Error("Failed to fetch top rated media");
   return res.json();
 }

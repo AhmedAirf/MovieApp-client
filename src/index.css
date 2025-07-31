@@ -2,3 +2,64 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fancy-text {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .trending {
+    @apply mt-20;
+  }
+
+  .trending ul {
+    @apply flex flex-row overflow-x-auto gap-5 -mt-10 w-full;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .trending ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trending ul li {
+    @apply min-w-[230px] flex flex-row items-center;
+  }
+
+  .trending ul li p {
+    @apply mt-[22px] text-nowrap;
+    font-family: "Bebas Neue", sans-serif;
+  }
+
+  .trending ul li img {
+    @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
+  }
+}
+
+@utility fancy-text {
+  -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
+  font-size: 190px;
+  font-family: "Bebas Neue", sans-serif;
+}
