@@ -11,7 +11,7 @@ import {
 } from "../../../redux/slices/mediaSlice";
 import MediaCarousel from "../../components/common/MediaCarousel";
 import MediaCard from "../../components/common/MediaCard";
-import Loader from "../../components/common/Loader";
+import Loader from "../../components/common/loader";
 import {
   FaPlay,
   FaInfoCircle,

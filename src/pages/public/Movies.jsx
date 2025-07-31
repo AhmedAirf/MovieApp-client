@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMovies, getGenres } from "../../../redux/slices/mediaSlice";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 import MediaCard from "../../components/common/MediaCard";
-import Loader from "../../components/common/Loader";
+import Loader from "../../components/common/loader";
 import Pagination from "../../components/common/Pagination";
 import MediaCarousel from "./../../components/common/MediaCarousel";
 import PublicHeader from "../../components/common/PublicHeader";
