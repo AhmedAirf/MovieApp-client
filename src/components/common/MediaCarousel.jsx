@@ -84,7 +84,7 @@ const MediaCarousel = ({ items, theme = "dark", onCurrentItemChange }) => {
             {/* Content */}
             <div className="absolute bottom-10 left-0 z-20 p-8 max-w-2xl">
               <h1
-                className={`text-3xl md:text-5xl font-bold mb-4 ${
+                className={`text-xl  md:text-5xl font-bold mb-4 ${
                   theme === "dark" ? "text-white" : "text-gray-200"
                 }`}
               >
@@ -103,7 +103,7 @@ const MediaCarousel = ({ items, theme = "dark", onCurrentItemChange }) => {
       </div>
 
       {/* Navigation dots */}
-      <div className="absolute bottom-4 left-1/2 z-50 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 gap-2">
         {items.slice(0, 5).map((_, index) => (
           <button
             key={index}

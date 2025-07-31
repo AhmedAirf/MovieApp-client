@@ -23,33 +23,34 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-900">
+    <div className="flex min-h-screen bg-black ">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-80 z-40 lg:hidden backdrop-blur-sm"
           onClick={toggleSidebar}
         />
       )}
 
-      {/* Admin Sidebar - Dark with Red Accents */}
+      {/* Admin Sidebar - Red & Black Theme */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 lg:w-80 bg-gray-800 shadow-lg border-r border-red-900 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-80 lg:w-96 bg-gradient-to-b from-gray-900 to-black shadow-2xl border-r border-red-900 transform transition-all duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="p-4 lg:p-6">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center">
-              <FilmIcon className="h-8 w-8 text-red-500 mr-2" />
+        <div className="p-6 lg:p-8">
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-gradient-to-r from-red-600 to-red-800 rounded-xl shadow-lg">
+                <FilmIcon className="h-8 w-8 text-white" />
+              </div>
               <Typography
                 as={Link}
                 to="/"
-                className="mr-4 cursor-pointer py-1.5 font-bold text-2xl lg:text-3xl xl:text-4xl text-red-600 hover:text-red-500 transition-colors"
+                className="cursor-pointer py-1.5 font-bold text-2xl lg:text-3xl xl:text-4xl bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent hover:from-red-400 hover:to-red-600 transition-all duration-300"
                 style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  textShadow: "0 0 8px rgba(229, 9, 20, 0.6)",
-                  letterSpacing: "1px",
+                  letterSpacing: "2px",
                 }}
               >
                 FLICKSY
@@ -57,80 +58,113 @@ const AdminLayout = () => {
             </div>
             <button
               onClick={toggleSidebar}
-              className="lg:hidden text-gray-300 hover:text-white"
+              className="lg:hidden text-gray-300 hover:text-red-400 p-2 rounded-lg hover:bg-red-900 hover:bg-opacity-50 transition-all duration-200"
             >
               <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
 
-          <nav className="space-y-2 lg:space-y-3">
+          <nav className="space-y-3 lg:space-y-4">
+            <div className="mb-6">
+              <h3 className="text-red-400 text-xs font-semibold uppercase tracking-wider mb-3">
+                Administration
+              </h3>
+            </div>
+
             <Link
               to="/admin"
-              className={`flex items-center px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-all text-sm lg:text-base ${
+              className={`flex items-center px-4 lg:px-6 py-3 lg:py-4 rounded-xl transition-all duration-300 text-sm lg:text-base group ${
                 isActive("/admin")
-                  ? "bg-red-900 text-white shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  ? "bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/25"
+                  : "text-gray-300 hover:bg-red-900 hover:bg-opacity-50 hover:text-red-300"
               }`}
               onClick={() => setSidebarOpen(false)}
             >
-              <HomeIcon className="h-4 w-4 lg:h-5 lg:w-5 mr-2 lg:mr-3" />
-              Dashboard
+              <div
+                className={`p-2 rounded-lg mr-3 transition-all duration-300 ${
+                  isActive("/admin")
+                    ? "bg-white bg-opacity-20"
+                    : "group-hover:bg-red-800 group-hover:bg-opacity-50"
+                }`}
+              >
+                <HomeIcon className="h-4 w-4 lg:h-5 lg:w-5" />
+              </div>
+              <span className="font-medium">Dashboard</span>
             </Link>
 
             <Link
               to="/admin/users"
-              className={`flex items-center px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-all text-sm lg:text-base ${
+              className={`flex items-center px-4 lg:px-6 py-3 lg:py-4 rounded-xl transition-all duration-300 text-sm lg:text-base group ${
                 isActive("/admin/users")
-                  ? "bg-red-900 text-white shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  ? "bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/25"
+                  : "text-gray-300 hover:bg-red-900 hover:bg-opacity-50 hover:text-red-300"
               }`}
               onClick={() => setSidebarOpen(false)}
             >
-              <UserGroupIcon className="h-4 w-4 lg:h-5 lg:w-5 mr-2 lg:mr-3" />
-              Manage Users
+              <div
+                className={`p-2 rounded-lg mr-3 transition-all duration-300 ${
+                  isActive("/admin/users")
+                    ? "bg-white bg-opacity-20"
+                    : "group-hover:bg-red-800 group-hover:bg-opacity-50"
+                }`}
+              >
+                <UserGroupIcon className="h-4 w-4 lg:h-5 lg:w-5" />
+              </div>
+              <span className="font-medium">Manage Users</span>
             </Link>
 
             {/* Back to Home Button */}
-            <Link
-              to="/"
-              className="flex items-center px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white border-t border-gray-700 mt-4 lg:mt-6 text-sm lg:text-base"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <ArrowLeftOnRectangleIcon className="h-4 w-4 lg:h-5 lg:w-5 mr-2 lg:mr-3" />
-              Back to Home
-            </Link>
+            <div className="pt-6 border-t border-red-900 mt-6">
+              <Link
+                to="/"
+                className="flex items-center px-4 lg:px-6 py-3 lg:py-4 rounded-xl transition-all duration-300 text-gray-300 hover:bg-red-900 hover:bg-opacity-50 hover:text-red-300 text-sm lg:text-base group"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <div className="p-2 rounded-lg mr-3 group-hover:bg-red-800 group-hover:bg-opacity-50 transition-all duration-300">
+                  <ArrowLeftOnRectangleIcon className="h-4 w-4 lg:h-5 lg:w-5" />
+                </div>
+                <span className="font-medium">Back to Home</span>
+              </Link>
+            </div>
           </nav>
         </div>
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:ml-0">
-        {/* Admin Header - Dark with Red Accents */}
-        <header className="bg-gray-800 shadow-sm border-b border-gray-700 px-4 lg:px-6 py-3 lg:py-4">
+        {/* Admin Header - Red & Black Theme */}
+        <header className="bg-gradient-to-r from-gray-900 to-black shadow-lg border-b border-red-900 px-6 lg:px-8 py-4 lg:py-6 backdrop-blur-sm">
           <div className="flex justify-between items-center">
-            <div className="flex items-center">
+            <div className="flex items-center gap-4">
               <button
                 onClick={toggleSidebar}
-                className="lg:hidden text-gray-300 hover:text-white mr-3"
+                className="lg:hidden text-gray-300 hover:text-red-400 p-2 rounded-lg hover:bg-red-900 hover:bg-opacity-50 transition-all duration-200"
               >
                 <Bars3Icon className="h-6 w-6" />
               </button>
-              <Typography
-                variant="h4"
-                className="font-semibold text-white text-lg lg:text-2xl xl:text-3xl"
-              >
-                {isActive("/admin") ? "Admin Dashboard" : "User Management"}
-              </Typography>
+              <div>
+                <Typography
+                  variant="h4"
+                  className="font-bold text-white text-xl lg:text-2xl xl:text-3xl"
+                >
+                  {isActive("/admin") ? "Admin Dashboard" : "User Management"}
+                </Typography>
+                <Typography className="text-red-300 text-sm lg:text-base">
+                  {isActive("/admin")
+                    ? "Overview and analytics"
+                    : "User administration"}
+                </Typography>
+              </div>
             </div>
 
-            <div className="flex items-center space-x-2 lg:space-x-4">
-              <div className="flex items-center">
-                <div className="h-6 w-6 lg:h-8 lg:w-8 rounded-full bg-red-900 flex items-center justify-center mr-2">
-                  <Typography className="text-white font-bold text-xs lg:text-sm">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-red-600 to-red-800 rounded-xl shadow-lg">
+                <div className="h-8 w-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                  <Typography className="text-white font-bold text-sm">
                     A
                   </Typography>
                 </div>
-                <Typography className="text-gray-300 text-sm lg:text-base">
+                <Typography className="text-white font-medium text-sm lg:text-base">
                   Admin
                 </Typography>
               </div>
@@ -138,8 +172,8 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* Main Content Area - Dark Background */}
-        <main className="flex-1 bg-gray-900">
+        {/* Main Content Area */}
+        <main className="flex-1">
           <div className="h-full w-full">
             <Outlet />
           </div>

@@ -34,6 +34,7 @@ const Home = () => {
     loading,
   } = useSelector((state) => state.media);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const theme = useSelector((state) => state.ui.theme);
   const [currentCarouselItem, setCurrentCarouselItem] = useState(null);
 
   // Refs for scrollable sections
@@ -68,19 +69,24 @@ const Home = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div
+      className={`${
+        theme === "dark" ? "bg-black text-white" : "bg-gray-50 text-gray-900"
+      } min-h-screen`}
+    >
       {/* Hero Carousel */}
       <div className="relative">
         <div className="relative">
           <MediaCarousel
             items={popular.movie?.data?.slice(0, 5)}
             theme="dark"
+            className="top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0 relative"
             onCurrentItemChange={setCurrentCarouselItem}
           />
-          <div className=" bottom-12 left-8 z-10 flex gap-3 relative ">
+          <div className=" bottom-20 left-8 z-10 flex gap-3 relative md:bottom-20 w-72 md:w-auto">
             {currentCarouselItem?.id && (
               <Link to={`/media/movie/${currentCarouselItem.id}`}>
-                <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+                <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm md:text-base px-6 py-2 md:py-4 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
                   <svg
                     className="w-5 h-5"
                     fill="currentColor"
@@ -96,7 +102,7 @@ const Home = () => {
                 </button>
               </Link>
             )}
-            <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
+            <button className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 md:text-base md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -117,14 +123,22 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(trendingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
             </button>
             <button
               onClick={() => scrollSection(trendingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -163,7 +177,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(popularMoviesRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -187,7 +205,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(popularMoviesRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -204,7 +226,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(popularTVRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -228,7 +254,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(popularTVRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -245,7 +275,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(topRatedRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -269,7 +303,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(topRatedRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -286,7 +324,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(nowPlayingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -310,7 +352,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(nowPlayingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -327,7 +373,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(upcomingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -351,7 +401,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(upcomingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -368,7 +422,11 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(airingTodayRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -392,7 +450,11 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(airingTodayRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block ${
+                theme === "dark"
+                  ? "bg-black bg-opacity-70 hover:bg-opacity-90 text-white"
+                  : "bg-white bg-opacity-70 hover:bg-opacity-90 text-gray-900 shadow-lg"
+              }`}
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />

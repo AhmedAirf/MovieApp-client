@@ -59,10 +59,10 @@ const Tv = () => {
           theme={theme}
           onCurrentItemChange={setCurrentCarouselItem}
         />
-        <div className=" bottom-12 left-8 z-10 flex gap-3 relative ">
+        <div className=" bottom-20 left-8 z-10 flex gap-3 relative md:bottom-12 w-72 md:w-auto">
           {currentCarouselItem?.id && (
             <Link to={`/media/tv/${currentCarouselItem.id}`}>
-              <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+              <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm md:text-base px-6 py-2 md:py-4 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"
@@ -78,8 +78,10 @@ const Tv = () => {
               </button>
             </Link>
           )}
-          <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
-            <FaPlus className="w-5 h-5" />
+          <button className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 md:text-base md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2  ">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             Add to Watchlist
           </button>
         </div>

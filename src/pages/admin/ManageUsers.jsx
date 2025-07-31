@@ -10,7 +10,6 @@ import {
   Button,
   Card,
   Typography,
-  Avatar,
   Chip,
   Input,
   Select,
@@ -114,20 +113,29 @@ const ManageUsers = () => {
   }
 
   return (
-    <div className="h-full bg-gray-900 p-3 lg:p-6 w-full">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 lg:mb-6">
-        <Typography
-          variant="h3"
-          className="text-white text-xl lg:text-2xl xl:text-3xl"
-        >
-          <FilmIcon className="h-6 w-6 lg:h-8 lg:w-8 inline mr-2 text-red-500" />
-          Manage Users
-        </Typography>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 lg:p-8 w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl shadow-lg">
+            <FilmIcon className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+          </div>
+          <div>
+            <Typography
+              variant="h3"
+              className="text-white text-2xl lg:text-3xl xl:text-4xl font-bold"
+            >
+              Manage Users
+            </Typography>
+            <Typography className="text-gray-300 text-sm lg:text-base">
+              User administration and management
+            </Typography>
+          </div>
+        </div>
         <Button
           variant="gradient"
           color="red"
           size="sm"
-          className="flex items-center gap-2 text-xs lg:text-sm"
+          className="flex items-center gap-2 text-xs lg:text-sm bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg"
           onClick={handleRefresh}
         >
           <ArrowPathIcon className="h-3 w-3 lg:h-4 lg:w-4" />
@@ -227,14 +235,7 @@ const ManageUsers = () => {
                   <tr key={user._id} className="hover:bg-gray-700">
                     <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-8 w-8 lg:h-10 lg:w-10">
-                          <Avatar
-                            src={user.avatar || "/default-avatar.jpg"}
-                            alt={user.name}
-                            size="sm"
-                            className="border border-red-500"
-                          />
-                        </div>
+                        <div className="flex-shrink-0 h-8 w-8 lg:h-10 lg:w-10"></div>
                         <div className="ml-2 lg:ml-4 min-w-0 flex-1">
                           <div className="text-sm font-medium text-white truncate">
                             {user.name}

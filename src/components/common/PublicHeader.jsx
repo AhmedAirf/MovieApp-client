@@ -182,49 +182,134 @@ const PublicHeader = (transparent = false) => {
       onClick={() => dispatch(toggleSidebar())}
     >
       <aside
-        className="w-64 bg-gray-200 dark:bg-gray-800 h-full p-6 shadow-lg"
+        className="w-80 bg-gradient-to-b from-gray-900 to-black h-full shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4">
-          <span className="font-bold text-lg">Sidebar</span>
-          <IconButton
-            variant="text"
-            color="black"
-            onClick={() => dispatch(toggleSidebar())}
-          >
-            <XMarkIcon className="h-6 w-6" />
-          </IconButton>
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 ">
+                <FilmIcon className="h-8 w-8 text-red-500 mr-2" />
+              </div>
+              <span className="font-bold text-xl text-white">Flicksy</span>
+            </div>
+            <IconButton
+              variant="text"
+              color="white"
+              onClick={() => dispatch(toggleSidebar())}
+              className="text-white hover:bg-white hover:bg-opacity-10"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </IconButton>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="mb-8">
+            <h3 className="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-4">
+              Browse
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  to="/"
+                  onClick={() => dispatch(toggleSidebar())}
+                  className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
+                >
+                  <svg
+                    className="w-5 h-5 group-hover:text-red-500 transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                  </svg>
+                  <span className="group-hover:text-red-500 transition-colors">
+                    Home
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/movies"
+                  onClick={() => dispatch(toggleSidebar())}
+                  className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
+                >
+                  <svg
+                    className="w-5 h-5 group-hover:text-red-500 transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                  </svg>
+                  <span className="group-hover:text-red-500 transition-colors">
+                    Movies
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/tv"
+                  onClick={() => dispatch(toggleSidebar())}
+                  className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
+                >
+                  <svg
+                    className="w-5 h-5 group-hover:text-red-500 transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                  </svg>
+                  <span className="group-hover:text-red-500 transition-colors">
+                    TV Shows
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* User Section */}
+          <div className="border-t border-gray-700 pt-6">
+            {!isAuthenticated ? (
+              <div className="space-y-3">
+                <h3 className="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-4">
+                  Account
+                </h3>
+                <Link
+                  to="/login"
+                  onClick={() => dispatch(toggleSidebar())}
+                  className="flex items-center gap-3 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200 group"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span>Login</span>
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => dispatch(toggleSidebar())}
+                  className="flex items-center gap-3 px-4 py-3 border border-white border-opacity-30 text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                  </svg>
+                  <span>Sign Up</span>
+                </Link>
+              </div>
+            ) : null}
+          </div>
         </div>
-        {/* Sidebar content here */}
-        <ul>
-          <li className="mb-2">
-            <Link
-              to="/"
-              onClick={() => dispatch(toggleSidebar())}
-              className="hover:text-red-500"
-            >
-              Home
-            </Link>
-          </li>
-          <li className="mb-2">
-            <Link
-              to="/movies"
-              onClick={() => dispatch(toggleSidebar())}
-              className="hover:text-red-500"
-            >
-              Movies
-            </Link>
-          </li>
-          <li className="mb-2">
-            <Link
-              to="/tv"
-              onClick={() => dispatch(toggleSidebar())}
-              className="hover:text-red-500"
-            >
-              TV Shows
-            </Link>
-          </li>
-        </ul>
       </aside>
     </div>
   );

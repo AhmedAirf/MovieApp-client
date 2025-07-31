@@ -3,13 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../../../redux/slices/adminSlice";
 import { selectAuth } from "../../../redux/slices/authslice";
-import {
-  Button,
-  Card,
-  Typography,
-  Avatar,
-  Chip,
-} from "@material-tailwind/react";
+import { Button, Card, Typography, Chip } from "@material-tailwind/react";
 import {
   UserCircleIcon,
   ShieldCheckIcon,
@@ -45,20 +39,29 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="h-full bg-gray-900 p-3 lg:p-6 w-full">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <Typography
-          variant="h3"
-          className="text-white text-xl lg:text-2xl xl:text-3xl"
-        >
-          <FilmIcon className="h-6 w-6 lg:h-8 lg:w-8 inline mr-2 text-red-500" />
-          Admin Dashboard
-        </Typography>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 lg:p-8 w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl shadow-lg">
+            <FilmIcon className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+          </div>
+          <div>
+            <Typography
+              variant="h3"
+              className="text-white text-2xl lg:text-3xl xl:text-4xl font-bold"
+            >
+              Dashboard
+            </Typography>
+            <Typography className="text-gray-300 text-sm lg:text-base">
+              Welcome back, {user.name}
+            </Typography>
+          </div>
+        </div>
         <Button
           variant="gradient"
           color="red"
           size="sm"
-          className="flex items-center gap-2 text-xs lg:text-sm"
+          className="flex items-center gap-2 text-xs lg:text-sm bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg"
           onClick={handleRefresh}
         >
           <ArrowPathIcon className="h-3 w-3 lg:h-4 lg:w-4" />
@@ -77,12 +80,6 @@ const Dashboard = () => {
         {/* User Info Card */}
         <Card className="p-4 lg:p-6 bg-gray-800 border border-gray-700 2xl:col-span-1">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 lg:gap-4 mb-4">
-            <Avatar
-              src={user.avatar || "/default-avatar.jpg"}
-              alt={user.name}
-              size="lg"
-              className="border-2 border-red-500 p-0.5"
-            />
             <div className="flex-1 min-w-0">
               <Typography
                 variant="h5"
@@ -229,43 +226,43 @@ const Dashboard = () => {
         </div>
         <div className="overflow-x-auto w-full">
           <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-gray-700">
+            <thead className="bg-gradient-to-r from-slate-700 to-slate-800">
               <tr>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider w-1/4">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider w-1/4">
                   User
                 </th>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell w-1/4">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider hidden sm:table-cell w-1/4">
                   Email
                 </th>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider w-1/6">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider w-1/6">
                   Role
                 </th>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden md:table-cell w-1/6">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider hidden md:table-cell w-1/6">
                   Status
                 </th>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden lg:table-cell w-1/6">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider hidden lg:table-cell w-1/6">
                   Joined
                 </th>
-                <th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider w-1/6">
+                <th className="px-6 lg:px-8 py-4 lg:py-6 text-left text-xs font-bold text-white uppercase tracking-wider w-1/6">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
+            <tbody className="bg-gradient-to-br from-slate-800 to-slate-900 divide-y divide-slate-700">
               {users.map((user, index) => (
-                <tr key={index} className="hover:bg-gray-700">
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
+                <tr
+                  key={index}
+                  className="hover:bg-slate-700 transition-colors duration-200"
+                >
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-8 w-8 lg:h-10 lg:w-10">
-                        <Avatar
-                          src={user.avatar || "/default-avatar.jpg"}
-                          alt={user.name}
-                          size="sm"
-                          className="border border-red-500"
-                        />
+                      <div className="flex-shrink-0 h-10 w-10 lg:h-12 lg:w-12">
+                        <div className="h-10 w-10 lg:h-12 lg:w-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center">
+                          <UserCircleIcon className="h-6 w-6 lg:h-8 lg:w-8 text-white" />
+                        </div>
                       </div>
-                      <div className="ml-2 lg:ml-4 min-w-0 flex-1">
-                        <div className="text-sm font-medium text-white truncate">
+                      <div className="ml-4 lg:ml-6 min-w-0 flex-1">
+                        <div className="text-sm font-bold text-white truncate">
                           {user.name}
                         </div>
                         <div className="text-xs text-gray-300 truncate sm:hidden">
@@ -274,29 +271,35 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray-300 hidden sm:table-cell">
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap text-sm text-gray-300 hidden sm:table-cell">
                     {user.email}
                   </td>
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
                     <Chip
                       value={user.role}
                       color={user.role === "admin" ? "red" : "gray"}
                       size="sm"
+                      className="font-bold"
                     />
                   </td>
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap hidden md:table-cell">
-                    <Chip value="Active" color="green" size="sm" />
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap hidden md:table-cell">
+                    <Chip
+                      value="Active"
+                      color="green"
+                      size="sm"
+                      className="font-bold"
+                    />
                   </td>
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray-300 hidden lg:table-cell">
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap text-sm text-gray-300 hidden lg:table-cell">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 lg:px-8 py-4 lg:py-6 whitespace-nowrap text-sm font-medium">
                     <Link to="/admin/users">
                       <Button
                         variant="gradient"
                         size="sm"
                         color="red"
-                        className="text-xs"
+                        className="text-xs bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg"
                       >
                         Manage
                       </Button>
