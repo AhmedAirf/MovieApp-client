@@ -23,7 +23,6 @@ import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 const Home = () => {
   const dispatch = useDispatch();
   const {
-    trending,
     popular,
     topRated,
     nowPlaying,
@@ -35,7 +34,7 @@ const Home = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   // Refs for scrollable sections
-  const trendingRef = useRef(null);
+
   const popularMoviesRef = useRef(null);
   const popularTVRef = useRef(null);
   const topRatedRef = useRef(null);
