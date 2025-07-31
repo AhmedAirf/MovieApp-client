@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const MediaCarousel = ({ items, theme = "dark" }) => {
+const MediaCarousel = ({ items, theme = "dark", onCurrentItemChange }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -18,6 +18,13 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
+
+  // Notify parent component when current item changes
+  useEffect(() => {
+    if (onCurrentItemChange && items && items.length > 0) {
+      onCurrentItemChange(items[currentIndex]);
+    }
+  }, [currentIndex, items, onCurrentItemChange]);
 
   // Avoid rendering if no items
   if (!items || items.length === 0) return null;
@@ -66,7 +73,7 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
             {/* Background image */}
             <img
               src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
-              alt={item.title || item.name}
+              alt={item.title || item.name || "Media item"}
               className="h-full w-full object-cover"
               onError={(e) => {
                 e.target.onerror = null;
@@ -81,14 +88,14 @@ const MediaCarousel = ({ items, theme = "dark" }) => {
                   theme === "dark" ? "text-white" : "text-gray-200"
                 }`}
               >
-                {item.title || item.name}
+                {item.title || item.name || ""}
               </h1>
               <p
                 className={`text-sm md:text-base mb-4 line-clamp-3 ${
                   theme === "dark" ? "text-gray-200" : "text-gray-200"
                 }`}
               >
-                {item.overview}
+                {item.overview || "No description available"}
               </p>
             </div>
           </div>

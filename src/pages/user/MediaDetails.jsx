@@ -220,7 +220,7 @@ const MediaDetails = () => {
                   </span>
                 </div>
 
-                <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-2 md:mb-4">
+                <h1 className="text-2xl md:text-4xl lg:text-3xl font-bold mb-2 md:mb-4">
                   {getMediaTitle()}
                 </h1>
 

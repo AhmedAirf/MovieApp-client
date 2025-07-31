@@ -7,6 +7,8 @@ import Loader from "../../components/common/loader";
 import Pagination from "../../components/common/Pagination";
 import MediaCarousel from "./../../components/common/MediaCarousel";
 import PublicHeader from "../../components/common/PublicHeader";
+import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 
 const Tv = () => {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ const Tv = () => {
   const tvPerPage = 20;
   const totalPages = Math.ceil((tvShows?.length || 0) / tvPerPage);
   const pagedTvShows = tvShows?.slice((page - 1) * tvPerPage, page * tvPerPage);
+  const [currentCarouselItem, setCurrentCarouselItem] = useState(null);
   useEffect(() => {
     dispatch(getAllTvShows());
     dispatch(getGenres());
@@ -49,8 +52,37 @@ const Tv = () => {
       }`}
     >
       {/* Hero section with adjusted height */}
-      <div className="absolute top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0">
-        <MediaCarousel items={tvShows} mediaType="tv" theme={theme} />
+      <div className=" top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0 relative">
+        <MediaCarousel
+          items={tvShows}
+          mediaType="tv"
+          theme={theme}
+          onCurrentItemChange={setCurrentCarouselItem}
+        />
+        <div className=" bottom-12 left-8 z-10 flex gap-3 relative ">
+          {currentCarouselItem?.id && (
+            <Link to={`/media/tv/${currentCarouselItem.id}`}>
+              <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Details
+              </button>
+            </Link>
+          )}
+          <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
+            <FaPlus className="w-5 h-5" />
+            Add to Watchlist
+          </button>
+        </div>
       </div>
 
       {/* Header remains absolute positioned */}
@@ -58,7 +90,7 @@ const Tv = () => {
         <PublicHeader transparent />
       </div>
       {/* Content Area - Starts below hero */}
-      <div className="relative pt-[45vh] md:pt-[70vh] lg:pt-[85vh] xl:pt-[90vh] z-30">
+      <div className="relative    ">
         <div className="container mx-auto px-4 py-8">
           <h2 className="text-xl md:text-2xl font-bold mb-6">
             Popular on Flicksy

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTrending,
@@ -19,10 +19,12 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
   const {
+    trending,
     popular,
     topRated,
     nowPlaying,
@@ -32,9 +34,10 @@ const Home = () => {
     loading,
   } = useSelector((state) => state.media);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const [currentCarouselItem, setCurrentCarouselItem] = useState(null);
 
   // Refs for scrollable sections
-
+  const trendingRef = useRef(null);
   const popularMoviesRef = useRef(null);
   const popularTVRef = useRef(null);
   const topRatedRef = useRef(null);
@@ -68,58 +71,88 @@ const Home = () => {
     <div className="bg-black text-white min-h-screen">
       {/* Hero Carousel */}
       <div className="relative">
-        <MediaCarousel items={popular.movie?.data?.slice(0, 5)} theme="dark" />
+        <div className="relative">
+          <MediaCarousel
+            items={popular.movie?.data?.slice(0, 5)}
+            theme="dark"
+            onCurrentItemChange={setCurrentCarouselItem}
+          />
+          <div className=" bottom-12 left-8 z-10 flex gap-3 relative ">
+            {currentCarouselItem?.id && (
+              <Link to={`/media/movie/${currentCarouselItem.id}`}>
+                <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Details
+                </button>
+              </Link>
+            )}
+            <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Add to Watchlist
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
       <div className="px-4 md:px-8 lg:px-12 xl:px-16 pb-16">
-        {/* Trending Now with Numbers */}
-        {/* <section className="mb-12 relative group">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center">
+        {/* Trending Now */}
+        <section className=" mb-12 relative  ">
+          <h2 className="text-2xl md:text-3xl font-bold mb-16 flex items-center">
             <span className="bg-red-600 h-8 w-1 mr-3"></span>
             Trending Now
           </h2>
           <div className="relative">
             <button
               onClick={() => scrollSection(trendingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
             </button>
-            <div
-              ref={trendingRef}
-              className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
-            >
-              <div className="flex space-x-4 px-4 md:px-8 w-max">
-                {trending.data?.data?.slice(0, 10).map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="relative group/item flex-none w-40 sm:w-48 md:w-56 lg:w-64 transition-transform hover:scale-105"
-                  >
-                    <div className="absolute -left-2 -top-2 z-10 bg-red-600 text-white font-bold text-xl w-10 h-10 flex items-center justify-center rounded-md shadow-lg">
-                      {index + 1}
-                    </div>
-                    <MediaCard
-                      media={item}
-                      genres={genres.data}
-                      media_type={item.media_type || "movie"}
-                      className="hover:border-red-600 hover:border-2 transition-all"
-                      isAuthenticated={isAuthenticated}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
             <button
               onClick={() => scrollSection(trendingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
             </button>
+
+            <ul
+              ref={trendingRef}
+              className="flex flex-row items-center gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+            >
+              {trending.data?.data?.slice(0, 9).map((movie, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row gap-3 w-full min-w-[230px]"
+                >
+                  <li className="text-9xl  font-light -mr-8  text-gray-600 flex items-center justify-center">
+                    <p>{index + 1}</p>
+                  </li>
+                  <MediaCard
+                    media={movie}
+                    genres={genres.data}
+                    media_type={movie.media_type || "movie"}
+                    isAuthenticated={isAuthenticated}
+                  />
+                </div>
+              ))}
+            </ul>
           </div>
-        </section> */}
+        </section>
 
         {/* Popular Movies */}
         <section className="mb-12 relative">
@@ -130,7 +163,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(popularMoviesRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -154,7 +187,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(popularMoviesRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -171,7 +204,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(popularTVRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -181,7 +214,7 @@ const Home = () => {
               className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
             >
               <div className="flex space-x-4 px-4 md:px-8 w-max">
-                {popular.tv?.data?.slice(0, 10).map((item) => (
+                {popular.tv?.data?.slice(0, 20).map((item) => (
                   <div key={item.id} className="flex-none w-40 sm:w-48 ">
                     <MediaCard
                       media={item}
@@ -195,7 +228,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(popularTVRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -212,7 +245,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(topRatedRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -222,7 +255,7 @@ const Home = () => {
               className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
             >
               <div className="flex space-x-4 px-4 md:px-8 w-max">
-                {topRated.movie?.data?.slice(0, 10).map((item) => (
+                {topRated.movie?.data?.slice(0, 20).map((item) => (
                   <div key={item.id} className="flex-none w-40 sm:w-48 ">
                     <MediaCard
                       media={item}
@@ -236,7 +269,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(topRatedRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -253,7 +286,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(nowPlayingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -263,7 +296,7 @@ const Home = () => {
               className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
             >
               <div className="flex space-x-4 px-4 md:px-8 w-max">
-                {nowPlaying?.data?.slice(0, 10).map((item) => (
+                {nowPlaying?.data?.slice(0, 20).map((item) => (
                   <div key={item.id} className="flex-none w-40 sm:w-48 ">
                     <MediaCard
                       media={item}
@@ -277,7 +310,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(nowPlayingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -294,7 +327,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(upcomingRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -304,7 +337,7 @@ const Home = () => {
               className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
             >
               <div className="flex space-x-4 px-4 md:px-8 w-max">
-                {upcoming?.data?.slice(0, 10).map((item) => (
+                {upcoming?.data?.slice(0, 20).map((item) => (
                   <div key={item.id} className="flex-none w-40 sm:w-48 ">
                     <MediaCard
                       media={item}
@@ -318,7 +351,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(upcomingRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />
@@ -335,7 +368,7 @@ const Home = () => {
           <div className="relative">
             <button
               onClick={() => scrollSection(airingTodayRef, "left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-r-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll left"
             >
               <FaChevronLeft className="text-xl" />
@@ -359,7 +392,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => scrollSection(airingTodayRef, "right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-70 hover:bg-opacity-90 p-2 rounded-l-full opacity-100 transition-opacity duration-300 hidden md:block"
               aria-label="Scroll right"
             >
               <FaChevronRight className="text-xl" />

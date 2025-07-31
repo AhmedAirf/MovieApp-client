@@ -223,7 +223,7 @@ const mediaSlice = createSlice({
       .addCase(getTrending.fulfilled, (state, action) => {
         state.trending.loading = false;
         state.trending.data = action.payload.results || action.payload;
-        console.log(state.trending.data);
+        // console.log(state.trending.data);
       })
       .addCase(getTrending.rejected, (state, action) => {
         state.trending.loading = false;
@@ -283,7 +283,7 @@ const mediaSlice = createSlice({
         const { type, data } = action.payload;
         state.topRated[type].loading = false;
         state.topRated[type].data = data.results || data;
-        console.log(state.topRated[type].data);
+        // console.log(state.topRated[type].data);
       })
       .addCase(getTopRatedMedia.rejected, (state, action) => {
         const type =
