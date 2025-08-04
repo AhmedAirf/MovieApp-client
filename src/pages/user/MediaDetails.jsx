@@ -20,6 +20,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 const MediaDetails = () => {
   const { id, type } = useParams();
@@ -39,6 +40,9 @@ const MediaDetails = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Watchlist functionality
+  const { toggleWatchlist, isInWatchlist, fetchUserWatchlist } = useWatchlist();
+
   useEffect(() => {
     if (id && type) {
       dispatch(fetchMediaDetails({ type, id }));
@@ -48,10 +52,15 @@ const MediaDetails = () => {
       dispatch(fetchMediaRecommendationsAsync({ type, id }));
     }
 
+    // Fetch user's watchlist if authenticated
+    if (isAuthenticated) {
+      fetchUserWatchlist();
+    }
+
     return () => {
       dispatch(clearMediaDetails());
     };
-  }, [dispatch, id, type]);
+  }, [dispatch, id, type, isAuthenticated, fetchUserWatchlist]);
 
   // Helper functions
   const formatRuntime = (minutes) => {
@@ -106,6 +115,20 @@ const MediaDetails = () => {
     document.body.style.overflow = video ? "hidden" : "auto";
   };
 
+  const handleWatchlistToggle = () => {
+    if (!isAuthenticated) {
+      alert("Please sign in to add items to your watchlist");
+      return;
+    }
+
+    const mediaItem = {
+      ...currentMedia,
+      media_type: type,
+    };
+
+    toggleWatchlist(mediaItem);
+  };
+
   if (loading) {
     return (
       <div
@@ -130,7 +153,7 @@ const MediaDetails = () => {
           <p className="text-gray-500 mb-6">{error || "Media not found"}</p>
           <Link
             to={type === "movie" ? "/movies" : "/tv"}
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+            className="group bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm font-semibold"
           >
             Go Back
           </Link>
@@ -284,21 +307,68 @@ const MediaDetails = () => {
                   {getTrailer() && (
                     <button
                       onClick={() => toggleVideoModal(getTrailer())}
-                      className="flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-6 md:py-3 bg-red-600 hover:bg-red-700 text-white rounded md:rounded-lg text-xs md:text-base font-medium md:font-semibold transition"
+                      className="group flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-6 md:py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white rounded md:rounded-lg text-xs md:text-base font-medium md:font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm"
                     >
-                      <PlayIcon className="h-3 w-3 md:h-5 md:w-5" />
+                      <PlayIcon className="h-3 w-3 md:h-5 md:w-5 group-hover:animate-pulse" />
                       <span>Watch Trailer</span>
                     </button>
                   )}
                   <button
-                    className={`flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-6 md:py-3 rounded md:rounded-lg text-xs md:text-base font-medium md:font-semibold transition ${
-                      theme === "dark"
-                        ? "bg-gray-800 hover:bg-gray-700 text-white"
-                        : "bg-gray-200 hover:bg-gray-300 text-gray-900"
+                    onClick={handleWatchlistToggle}
+                    disabled={!isAuthenticated}
+                    className={`group flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-6 md:py-3 rounded md:rounded-lg text-xs md:text-base font-medium md:font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm ${
+                      !isAuthenticated
+                        ? "bg-gray-500 text-gray-300 cursor-not-allowed opacity-50"
+                        : isInWatchlist(currentMedia.id)
+                        ? " bg-green-700    hover:bg-green-800  text-white"
+                        : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white"
                     }`}
                   >
-                    <StarIcon className="h-3 w-3 md:h-5 md:w-5" />
-                    <span>Add to List</span>
+                    {!isAuthenticated ? (
+                      <svg
+                        className="h-3 w-3 md:h-5 md:w-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    ) : isInWatchlist(currentMedia.id) ? (
+                      <svg
+                        className="h-3 w-3 md:h-5 md:w-5 group-hover:animate-pulse"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="h-3 w-3 md:h-5 md:w-5 group-hover:animate-bounce"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                    <span>
+                      {!isAuthenticated
+                        ? "Sign in to Add"
+                        : isInWatchlist(currentMedia.id)
+                        ? "Remove from "
+                        : "Add to "}
+                      {!isAuthenticated ? "" : "Watchlist"}
+                    </span>
                   </button>
                 </div>
               </div>

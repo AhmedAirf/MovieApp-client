@@ -144,7 +144,7 @@ const publicFooter = () => {
                 placeholder="Your email address"
                 className="bg-gray-800 text-white px-4 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-red-600 w-full"
               />
-              <button className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-r transition">
+              <button className="group bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-4 py-2 rounded-r transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm font-semibold">
                 Subscribe
               </button>
             </div>

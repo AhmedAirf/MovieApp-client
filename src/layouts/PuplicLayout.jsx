@@ -6,7 +6,7 @@ import PublicFooter from "./publicFooter";
 
 const PuplicLayout = () => {
   const location = useLocation();
-  const hideHeader = ["/login", "/register", "/movies", "/tv"].includes(
+  const hideHeader = ["/login", "/register", "/movies", "/tv", "/"].includes(
     location.pathname
   );
   const hideFooter = ["/login", "/register"].includes(location.pathname);

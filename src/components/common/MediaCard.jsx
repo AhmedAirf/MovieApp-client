@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import UnauthenticatedAlert from "./UnauthenticatedAlert";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 const MediaCard = ({
   media,
@@ -10,6 +11,7 @@ const MediaCard = ({
   isAuthenticated = false, // Add this prop to check auth status
 }) => {
   const [showAuthAlert, setShowAuthAlert] = useState(false);
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
 
   if (!media) return null;
 
@@ -42,6 +44,24 @@ const MediaCard = ({
       setShowAuthAlert(true);
     }
     // If authenticated, the link will navigate normally
+  };
+
+  const handleWatchlistClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      setShowAuthAlert(true);
+      return;
+    }
+
+    // Ensure media object has media_type field
+    const mediaWithType = {
+      ...media,
+      media_type: media.media_type || media_type,
+    };
+
+    toggleWatchlist(mediaWithType);
   };
 
   return (
@@ -100,19 +120,41 @@ const MediaCard = ({
                       : ""}
                   </p>
                 </div>
-                <button className="bg-gray-800/80 hover:bg-gray-700/90 text-white rounded-full p-1 sm:p-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 sm:h-5 sm:w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                <button
+                  onClick={handleWatchlistClick}
+                  className={`group rounded-full p-1 sm:p-2 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm ${
+                    isInWatchlist(media.id)
+                      ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
+                      : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white"
+                  }`}
+                >
+                  {isInWatchlist(media.id) ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 sm:h-5 sm:w-5 group-hover:animate-pulse"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 sm:h-5 sm:w-5 group-hover:animate-bounce"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
                 </button>
               </div>
 

@@ -150,7 +150,7 @@ const PersonDetails = () => {
           <p className="text-gray-500 mb-6">{error || "Person not found"}</p>
           <Link
             to="/"
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+            className="group bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm font-semibold"
           >
             Go Home
           </Link>

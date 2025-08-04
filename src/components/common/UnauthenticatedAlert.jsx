@@ -52,7 +52,7 @@ const UnauthenticatedAlert = ({ onClose }) => {
             <Link
               to="/login"
               onClick={onClose}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-center"
+              className="group flex-1 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm text-center"
             >
               Sign In
             </Link>

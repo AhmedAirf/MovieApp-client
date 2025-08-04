@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTrending,
@@ -12,6 +12,7 @@ import {
 import MediaCarousel from "../../components/common/MediaCarousel";
 import MediaCard from "../../components/common/MediaCard";
 import Loader from "../../components/common/loader";
+import PublicHeader from "../../components/common/PublicHeader";
 import {
   FaPlay,
   FaInfoCircle,
@@ -20,6 +21,7 @@ import {
 } from "react-icons/fa";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 import { Link } from "react-router-dom";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -35,7 +37,10 @@ const Home = () => {
   } = useSelector((state) => state.media);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const theme = useSelector((state) => state.ui.theme);
-  const [currentCarouselItem, setCurrentCarouselItem] = useState(null);
+  // const [currentCarouselItem, setCurrentCarouselItem] = useState(null);
+
+  // Watchlist functionality
+  const { fetchUserWatchlist } = useWatchlist();
 
   // Refs for scrollable sections
   const trendingRef = useRef(null);
@@ -56,7 +61,12 @@ const Home = () => {
     dispatch(getUpcoming());
     dispatch(getAiringToday());
     dispatch(getGenres());
-  }, [dispatch]);
+
+    // Fetch user's watchlist if authenticated
+    if (isAuthenticated) {
+      fetchUserWatchlist();
+    }
+  }, [dispatch, isAuthenticated, fetchUserWatchlist]);
 
   // Scroll functions for each section
   const scrollSection = (ref, direction) => {
@@ -72,51 +82,30 @@ const Home = () => {
     <div
       className={`${
         theme === "dark" ? "bg-black text-white" : "bg-gray-50 text-gray-900"
-      } min-h-screen`}
+      } min-h-screen relative`}
     >
       {/* Hero Carousel */}
       <div className="relative">
         <div className="relative">
           <MediaCarousel
             items={popular.movie?.data?.slice(0, 5)}
+            mediaType="movie"
             theme="dark"
             className="top-0 left-0 w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] z-0 relative"
-            onCurrentItemChange={setCurrentCarouselItem}
           />
-          <div className=" bottom-20 left-8 z-10 flex gap-3 relative md:bottom-20 w-72 md:w-auto">
-            {currentCarouselItem?.id && (
-              <Link to={`/media/movie/${currentCarouselItem.id}`}>
-                <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm md:text-base px-6 py-2 md:py-4 rounded-lg font-semibold transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Details
-                </button>
-              </Link>
-            )}
-            <button className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 md:text-base md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Add to Watchlist
-            </button>
-          </div>
         </div>
+      </div>
+
+      {/* Header remains absolute positioned */}
+      <div className="absolute top-0 left-0 w-full z-50">
+        <PublicHeader transparent />
       </div>
 
       {/* Main Content */}
       <div className="px-4 md:px-8 lg:px-12 xl:px-16 pb-16">
         {/* Trending Now */}
-        <section className=" mb-12 relative  ">
-          <h2 className="text-2xl md:text-3xl font-bold mb-16 flex items-center">
+        <section className=" mb-12 mt-16 relative  ">
+          <h2 className="text-2xl md:text-3xl font-bold mb-12 flex items-center">
             <span className="bg-red-600 h-8 w-1 mr-3"></span>
             Trending Now
           </h2>

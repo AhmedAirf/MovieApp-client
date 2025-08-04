@@ -26,6 +26,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuth, logout } from "../../../redux/slices/authslice";
 import { toggleTheme, toggleSidebar } from "../../../redux/slices/uiSlice";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,6 +34,7 @@ function ProfileMenu() {
   const navigate = useNavigate();
   const { user } = useSelector(selectAuth);
   const theme = useSelector((state) => state.ui.theme);
+  const { totalItems } = useWatchlist();
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -113,8 +115,13 @@ function ProfileMenu() {
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
-            My List
+            My Watchlist
           </Typography>
+          {totalItems > 0 && (
+            <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+              {totalItems}
+            </span>
+          )}
         </MenuItem>
         {user && user.role === "admin" && (
           <MenuItem
@@ -162,6 +169,7 @@ const PublicHeader = (transparent = false) => {
   const theme = useSelector((state) => state.ui.theme);
   const sidebarOpen = useSelector((state) => state.ui.sidebarOpen);
   const dispatch = useDispatch();
+  const { totalItems } = useWatchlist();
 
   useEffect(() => {
     const handleResize = () => {
@@ -264,6 +272,31 @@ const PublicHeader = (transparent = false) => {
                   </span>
                 </Link>
               </li>
+              {isAuthenticated && (
+                <li>
+                  <Link
+                    to="/watchlist"
+                    onClick={() => dispatch(toggleSidebar())}
+                    className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
+                  >
+                    <svg
+                      className="w-5 h-5 group-hover:text-red-500 transition-colors"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span className="group-hover:text-red-500 transition-colors">
+                      My Watchlist
+                    </span>
+                    {totalItems > 0 && (
+                      <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 
@@ -277,7 +310,7 @@ const PublicHeader = (transparent = false) => {
                 <Link
                   to="/login"
                   onClick={() => dispatch(toggleSidebar())}
-                  className="flex items-center gap-3 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200 group"
+                  className="group flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm"
                 >
                   <svg
                     className="w-5 h-5"
@@ -529,10 +562,10 @@ const PublicHeader = (transparent = false) => {
                 <Button
                   variant="filled"
                   size="sm"
-                  className="hidden lg:inline-flex items-center gap-2 bg-red-600 hover:bg-red-700"
+                  className="group hidden lg:inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm"
                 >
                   <span>Sign In</span>
-                  <ArrowRightIcon className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4 group-hover:animate-pulse" />
                 </Button>
               </Link>
             )}
@@ -565,10 +598,10 @@ const PublicHeader = (transparent = false) => {
                 <Button
                   fullWidth
                   variant="filled"
-                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700"
+                  className="group flex items-center gap-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm"
                 >
                   <span>Sign In</span>
-                  <ArrowRightIcon className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4 group-hover:animate-pulse" />
                 </Button>
               </Link>
             )}

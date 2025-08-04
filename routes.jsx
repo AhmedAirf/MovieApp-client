@@ -13,7 +13,7 @@ import Register from "./src/pages/auth/Register";
 import Movies from "./src/pages/public/Movies";
 import Tv from "./src/pages/public/Tv";
 import Profile from "./src/pages/user/profile";
-import Watchlist from "./src/pages/user/whatchlist";
+import Watchlist from "./src/pages/user/Watchlist";
 import MediaDetails from "./src/pages/user/MediaDetails";
 import Dashboard from "./src/pages/admin/Dashboard";
 import ManageUsers from "./src/pages/admin/ManageUsers";

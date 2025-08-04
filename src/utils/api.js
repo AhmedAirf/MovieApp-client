@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 let authToken = null;
 
@@ -74,32 +75,77 @@ export async function updateUserProfile(profileData) {
   return res.json();
 }
 
-// Fetch the user's watchlist
+// Watchlist API functions
 export async function fetchWatchlist() {
   const res = await fetch(`${BASE_URL}/users/watchlist`, {
     headers: getHeaders(),
   });
-  if (!res.ok) throw new Error("Failed to fetch watchlist");
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to fetch watchlist: ${res.status} ${res.statusText}`
+    );
+  }
+
   return res.json();
 }
 
-// Add a movie/TV show to the user's watchlist
-export async function addToWatchlist(item) {
+export async function addToWatchlist(mediaItem) {
+  // Ensure we have the correct structure
+  const requestBody = {
+    tmdbid: mediaItem.id || mediaItem.tmdbid,
+    media_type: mediaItem.media_type || mediaItem.mediaType || "movie", // Default to movie if not specified
+  };
+
   const res = await fetch(`${BASE_URL}/users/watchlist`, {
     method: "POST",
     headers: getHeaders(),
-    body: JSON.stringify(item),
+    body: JSON.stringify(requestBody),
   });
-  if (!res.ok) throw new Error("Failed to add to watchlist");
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to add to watchlist: ${res.status} ${res.statusText}`
+    );
+  }
+
   return res.json();
 }
 
-// Remove a movie/TV show from the user's watchlist
-export async function removeFromWatchlist(tmdbid) {
-  const res = await fetch(`${BASE_URL}/users/watchlist/${tmdbid}`, {
+export async function removeFromWatchlist(mediaId, mediaType) {
+  const url = `${BASE_URL}/users/watchlist/${mediaId}?media_type=${mediaType}`;
+
+  const res = await fetch(url, {
     method: "DELETE",
     headers: getHeaders(),
   });
-  if (!res.ok) throw new Error("Failed to remove from watchlist");
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to remove from watchlist: ${res.status} ${res.statusText}`
+    );
+  }
+
   return res.json();
+}
+
+export async function clearWatchlist() {
+  const res = await fetch(`${BASE_URL}/users/watchlist`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message ||
+        `Failed to clear watchlist: ${res.status} ${res.statusText}`
+    );
+  }
+  return true;
 }

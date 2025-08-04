@@ -5,7 +5,7 @@ import searchReducer from "./slices/searchSlice";
 import mediaDetailsReducer from "./slices/mediaDetailsSlice";
 import adminReducer from "./slices/adminSlice";
 import mediaReducer from "./slices/mediaSlice";
-// import watchlistReducer from "./slices/watchlistSlice";
+import watchlistReducer from "./slices/watchlistSlice";
 
 const Store = configureStore({
   reducer: {
@@ -15,7 +15,7 @@ const Store = configureStore({
     mediaDetails: mediaDetailsReducer,
     admin: adminReducer,
     media: mediaReducer,
-    // watchlist: watchlistReducer,
+    watchlist: watchlistReducer,
   },
 });
 
