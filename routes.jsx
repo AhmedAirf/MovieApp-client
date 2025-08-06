@@ -29,7 +29,6 @@ const AppRoutes = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/not-authorized" element={<NotAuthorized />} />
-      <Route path="*" element={<NotFound />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/tv" element={<Tv />} />
     </Route>
@@ -59,6 +58,9 @@ const AppRoutes = () => (
       <Route path="/admin" element={<Dashboard />} />
       <Route path="/admin/users" element={<ManageUsers />} />
     </Route>
+
+    {/* Catch-all route for 404 - must be last */}
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 
