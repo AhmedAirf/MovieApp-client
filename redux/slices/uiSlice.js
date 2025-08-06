@@ -16,12 +16,6 @@ const initialState = {
   error: null,
   theme: getStoredTheme(),
   sidebarOpen: false,
-  searchQuery: "",
-  filters: {
-    genre: "",
-    year: "",
-    sortBy: "popularity",
-  },
 };
 
 const uiSlice = createSlice({
@@ -62,15 +56,6 @@ const uiSlice = createSlice({
     setSidebarOpen: (state, action) => {
       state.sidebarOpen = action.payload;
     },
-    setSearchQuery: (state, action) => {
-      state.searchQuery = action.payload;
-    },
-    setFilters: (state, action) => {
-      state.filters = { ...state.filters, ...action.payload };
-    },
-    clearFilters: (state) => {
-      state.filters = initialState.filters;
-    },
   },
 });
 
@@ -82,9 +67,6 @@ export const {
   setTheme,
   toggleSidebar,
   setSidebarOpen,
-  setSearchQuery,
-  setFilters,
-  clearFilters,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

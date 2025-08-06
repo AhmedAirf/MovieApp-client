@@ -17,6 +17,8 @@ const initialState = {
   loading: false,
   error: null,
   hasSearched: false,
+  showResults: false,
+  recentSearches: [],
 };
 
 const searchSlice = createSlice({
@@ -27,11 +29,16 @@ const searchSlice = createSlice({
       state.searchResults = [];
       state.currentQuery = "";
       state.hasSearched = false;
+      state.showResults = false;
     },
     addToHistory: (state, action) => {
       const query = action.payload;
-      if (!state.searchHistory.includes(query)) {
-        state.searchHistory.unshift(query);
+      if (
+        query &&
+        query.trim() &&
+        !state.searchHistory.includes(query.trim())
+      ) {
+        state.searchHistory.unshift(query.trim());
         // Keep only last 10 searches
         if (state.searchHistory.length > 10) {
           state.searchHistory.pop();
@@ -44,6 +51,16 @@ const searchSlice = createSlice({
     setCurrentQuery: (state, action) => {
       state.currentQuery = action.payload;
     },
+    setShowResults: (state, action) => {
+      state.showResults = action.payload;
+    },
+    clearResults: (state) => {
+      state.searchResults = [];
+      state.showResults = false;
+    },
+    setRecentSearches: (state, action) => {
+      state.recentSearches = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -55,6 +72,7 @@ const searchSlice = createSlice({
         state.loading = false;
         state.searchResults = action.payload;
         state.hasSearched = true;
+        state.showResults = true;
       })
       .addCase(performSearch.rejected, (state, action) => {
         state.loading = false;
@@ -63,7 +81,14 @@ const searchSlice = createSlice({
   },
 });
 
-export const { clearSearch, addToHistory, clearHistory, setCurrentQuery } =
-  searchSlice.actions;
+export const {
+  clearSearch,
+  addToHistory,
+  clearHistory,
+  setCurrentQuery,
+  setShowResults,
+  clearResults,
+  setRecentSearches,
+} = searchSlice.actions;
 
 export default searchSlice.reducer;
