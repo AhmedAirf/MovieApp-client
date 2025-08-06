@@ -17,6 +17,7 @@ const MediaCarousel = ({
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [showAuthAlert, setShowAuthAlert] = useState(false);
   const { toggleWatchlist, isInWatchlist } = useWatchlist();
+
   // Auto-advance slides when not hovered
   useEffect(() => {
     if (isHovered) return;
@@ -68,7 +69,7 @@ const MediaCarousel = ({
   return (
     <div
       className={`relative w-full h-[45vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] overflow-hidden ${
-        theme === "dark" ? "" : "bg-gray-100"
+        theme === "dark" ? "" : "bg-gray-50"
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -89,21 +90,21 @@ const MediaCarousel = ({
               className={`absolute inset-0 z-10 ${
                 theme === "dark"
                   ? "bg-gradient-to-t from-black via-black/40 to-transparent"
-                  : "bg-transparent"
+                  : "bg-gradient-to-t from-black/60 via-black/20 to-transparent"
               }`}
             ></div>
             <div
               className={`absolute top-0 h-32 w-full z-10 ${
                 theme === "dark"
                   ? "bg-gradient-to-b from-black to-transparent"
-                  : "bg-transparent"
+                  : "bg-gradient-to-b from-black/40 to-transparent"
               }`}
             ></div>
             <div
               className={`absolute inset-0 z-10 ${
                 theme === "dark"
                   ? "bg-gradient-to-r from-black via-black/40 to-transparent"
-                  : "bg-transparent"
+                  : "bg-gradient-to-r from-black/40 via-black/20 to-transparent"
               }`}
             ></div>
             {/* Background image */}
@@ -121,14 +122,16 @@ const MediaCarousel = ({
             <div className="absolute bottom-20 sm:bottom-16 md:bottom-10 left-0 z-20 p-4 sm:p-6 md:p-8 max-w-2xl">
               <h1
                 className={`text-lg sm:text-xl md:text-3xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 ${
-                  theme === "dark" ? "text-white" : "text-gray-200"
+                  theme === "dark" ? "text-white" : "text-white drop-shadow-lg"
                 }`}
               >
                 {item.title || item.name || ""}
               </h1>
               <p
                 className={`text-xs sm:text-sm md:text-base mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-200"
+                  theme === "dark"
+                    ? "text-gray-200"
+                    : "text-gray-100 drop-shadow-md"
                 }`}
               >
                 {item.overview || "No description available"}
@@ -136,13 +139,13 @@ const MediaCarousel = ({
             </div>
 
             {/* Buttons */}
-            <div className="absolute   bottom-10 md:bottom-2 left-4 md:left-8 z-30 flex   sm:flex-row gap-3 md:gap-4 lg:gap-6  sm:w-auto max-w-xs sm:max-w-none">
+            <div className="absolute bottom-12 md:bottom-6 left-4 md:left-8 z-30 flex sm:flex-row gap-3 md:gap-4 lg:gap-6 sm:w-auto max-w-xs sm:max-w-none">
               {isAuthenticated ? (
                 <Link
                   to={`/media/${mediaType}/${item.id}`}
                   className="w-full sm:w-auto"
                 >
-                  <Button className="group w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm">
+                  <Button className="group w-full sm:w-auto bg-blue-gray-400 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse"
                       fill="currentColor"
@@ -163,7 +166,7 @@ const MediaCarousel = ({
               ) : (
                 <Button
                   onClick={handleAuthAlert}
-                  className="group w-full sm:w-auto bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm"
+                  className="group w-full sm:w-auto bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm"
                 >
                   <svg
                     className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse"
@@ -185,9 +188,9 @@ const MediaCarousel = ({
               <Button
                 onClick={handleWatchlistClick}
                 size="sm"
-                className={`group w-full sm:w-auto text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm ${
+                className={`group w-full sm:w-auto text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm ${
                   isInWatchlist(items[currentIndex]?.id)
-                    ? "bg-green-700    hover:bg-green-800  text-white"
+                    ? "bg-green-700 hover:bg-green-800 text-white"
                     : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700"
                 }`}
               >
@@ -237,10 +240,10 @@ const MediaCarousel = ({
               index === currentIndex
                 ? theme === "dark"
                   ? "w-6 bg-white"
-                  : "w-6 bg-black"
+                  : "w-6 bg-white"
                 : theme === "dark"
                 ? "w-2 bg-white/50"
-                : "w-2 bg-black/50"
+                : "w-2 bg-white/50"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

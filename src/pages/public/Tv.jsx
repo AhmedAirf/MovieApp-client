@@ -67,7 +67,7 @@ const Tv = () => {
 
       {/* Header remains absolute positioned */}
       <div className="absolute top-0 left-0 w-full z-50">
-        <PublicHeader transparent />
+        <PublicHeader transparent={true} />
       </div>
       {/* Content Area - Starts below hero */}
       <div className="relative    ">

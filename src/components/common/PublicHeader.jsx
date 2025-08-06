@@ -161,7 +161,7 @@ function ProfileMenu() {
   );
 }
 
-const PublicHeader = (transparent = false) => {
+const PublicHeader = ({ transparent = false, userLayout = false }) => {
   const [openNav, setOpenNav] = useState(false);
   const { isAuthenticated } = useSelector(selectAuth);
   const [showSearch, setShowSearch] = useState(false);
@@ -352,13 +352,24 @@ const PublicHeader = (transparent = false) => {
       <Typography
         as="li"
         variant="small"
-        color={theme === "dark" ? "white" : "black"}
-        className="p-1 font-medium hover:text-red-500 transition-colors"
+        className={`p-1 font-medium transition-all duration-200 ${
+          theme === "dark"
+            ? "text-white hover:text-red-500"
+            : userLayout
+            ? "text-gray-900 hover:text-red-500 font-medium"
+            : "text-white hover:text-red-400 drop-shadow-lg font-semibold"
+        }`}
       >
         <Link
           to="/"
           onClick={() => setOpenNav(false)}
-          className="flex items-center focus:text-red-500"
+          className={`flex items-center focus:text-red-500 ${
+            theme === "dark"
+              ? ""
+              : userLayout
+              ? "hover:bg-red-50 px-2 py-1 rounded-md"
+              : "hover:bg-white/10 px-2 py-1 rounded-md"
+          }`}
         >
           Home
         </Link>
@@ -366,13 +377,24 @@ const PublicHeader = (transparent = false) => {
       <Typography
         as="li"
         variant="small"
-        color={theme === "dark" ? "white" : "black"}
-        className="p-1 font-medium hover:text-red-500 transition-colors"
+        className={`p-1 font-medium transition-all duration-200 ${
+          theme === "dark"
+            ? "text-white hover:text-red-500"
+            : userLayout
+            ? "text-gray-900 hover:text-red-500 font-medium"
+            : "text-white hover:text-red-400 drop-shadow-lg font-semibold"
+        }`}
       >
         <Link
           to="/movies"
           onClick={() => setOpenNav(false)}
-          className="flex items-center focus:text-red-500"
+          className={`flex items-center focus:text-red-500 ${
+            theme === "dark"
+              ? ""
+              : userLayout
+              ? "hover:bg-red-50 px-2 py-1 rounded-md"
+              : "hover:bg-white/10 px-2 py-1 rounded-md"
+          }`}
         >
           Movies
         </Link>
@@ -380,13 +402,24 @@ const PublicHeader = (transparent = false) => {
       <Typography
         as="li"
         variant="small"
-        color={theme === "dark" ? "white" : "black"}
-        className="p-1 font-medium hover:text-red-500 transition-colors"
+        className={`p-1 font-medium transition-all duration-200 ${
+          theme === "dark"
+            ? "text-white hover:text-red-500"
+            : userLayout
+            ? "text-gray-900 hover:text-red-500 font-medium"
+            : "text-white hover:text-red-400 drop-shadow-lg font-semibold"
+        }`}
       >
         <Link
           to="/tv"
           onClick={() => setOpenNav(false)}
-          className="flex items-center focus:text-red-500"
+          className={`flex items-center focus:text-red-500 ${
+            theme === "dark"
+              ? ""
+              : userLayout
+              ? "hover:bg-red-50 px-2 py-1 rounded-md"
+              : "hover:bg-white/10 px-2 py-1 rounded-md"
+          }`}
         >
           TV Shows
         </Link>
@@ -413,7 +446,11 @@ const PublicHeader = (transparent = false) => {
         size="sm"
         aria-label="Close search"
         className={`absolute right-1 ${
-          theme === "dark" ? "text-white" : "text-gray-600"
+          theme === "dark"
+            ? "text-white"
+            : userLayout
+            ? "text-gray-900"
+            : "text-gray-600"
         }`}
         onClick={() => setShowSearch(false)}
       >
@@ -444,7 +481,11 @@ const PublicHeader = (transparent = false) => {
             size="lg"
             aria-label="Close search"
             className={`absolute right-2 ${
-              theme === "dark" ? "text-white" : "text-gray-600"
+              theme === "dark"
+                ? "text-white"
+                : userLayout
+                ? "text-gray-900"
+                : "text-gray-600"
             }`}
             onClick={() => setShowSearch(false)}
           >
@@ -478,15 +519,16 @@ const PublicHeader = (transparent = false) => {
             {/* Sidebar toggle button */}
             <IconButton
               variant="text"
-              color={theme === "dark" ? "white" : "black"}
-              className="lg:hidden"
+              className={`lg:hidden ${
+                theme === "dark"
+                  ? "text-white hover:text-red-500"
+                  : userLayout
+                  ? "text-gray-900 hover:text-red-500"
+                  : "text-white hover:text-red-400 drop-shadow-lg"
+              } transition-all duration-200`}
               onClick={() => dispatch(toggleSidebar())}
             >
-              <Bars3Icon
-                className={`h-6 w-6 ${
-                  theme === "dark" ? "text-white" : "text-gray-800"
-                }`}
-              />
+              <Bars3Icon className="h-6 w-6" />
             </IconButton>
             <div className="flex items-center ">
               <FilmIcon className="h-8 w-8 text-red-500 mr-2" />
@@ -512,12 +554,17 @@ const PublicHeader = (transparent = false) => {
           <div className="flex items-center gap-4">
             {/* Theme toggle icon */}
             <IconButton
-              color={theme === "dark" ? "white" : "black"}
               variant="text"
               size="sm"
               aria-label="Toggle theme"
               onClick={() => dispatch(toggleTheme())}
-              className=""
+              className={`${
+                theme === "dark"
+                  ? "text-white hover:text-red-500"
+                  : userLayout
+                  ? "text-gray-900 hover:text-red-500"
+                  : "text-white hover:text-red-400 drop-shadow-lg"
+              } transition-all duration-200`}
             >
               {theme === "dark" ? (
                 <SunIcon className="h-6 w-6" />
@@ -531,12 +578,17 @@ const PublicHeader = (transparent = false) => {
                 searchInput
               ) : (
                 <IconButton
-                  color={theme === "dark" ? "white" : "black"}
                   variant="text"
                   size="sm"
                   aria-label="Search"
                   onClick={() => setShowSearch(true)}
-                  className="inline-block"
+                  className={`${
+                    theme === "dark"
+                      ? "text-white hover:text-red-500"
+                      : userLayout
+                      ? "text-gray-900 hover:text-red-500"
+                      : "text-white hover:text-red-400 drop-shadow-lg"
+                  } transition-all duration-200`}
                 >
                   <MagnifyingGlassIcon className="h-5 w-5" />
                 </IconButton>
@@ -545,12 +597,17 @@ const PublicHeader = (transparent = false) => {
             {/* Mobile search icon */}
             <div className="lg:hidden">
               <IconButton
-                color={theme === "dark" ? "white" : "black"}
                 variant="text"
                 size="sm"
                 aria-label="Search"
                 onClick={() => setShowSearch(true)}
-                className="inline-block"
+                className={`${
+                  theme === "dark"
+                    ? "text-white hover:text-red-500"
+                    : userLayout
+                    ? "text-gray-900 hover:text-red-500"
+                    : "text-white hover:text-red-400 drop-shadow-lg"
+                } transition-all duration-200`}
               >
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </IconButton>
