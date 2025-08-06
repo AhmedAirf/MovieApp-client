@@ -15,6 +15,8 @@ const GridMotion = ({ items = [], gradientColor = "black" }) => {
     items.length > 0 ? items.slice(0, totalItems) : defaultItems;
 
   useEffect(() => {
+    if (!gridRef.current) return;
+
     gsap.ticker.lagSmoothing(0);
 
     const handleMouseMove = (e) => {
@@ -31,7 +33,8 @@ const GridMotion = ({ items = [], gradientColor = "black" }) => {
       const inertiaFactors = [0.6, 0.4, 0.3, 0.2];
 
       rowRefs.current.forEach((row, index) => {
-        if (row) {
+        if (row && row.parentNode) {
+          // Check if element still exists in DOM
           const direction = index % 2 === 0 ? 1 : -1;
           const moveAmount =
             ((mouseXRef.current / window.innerWidth) * maxMoveAmount -
@@ -57,6 +60,8 @@ const GridMotion = ({ items = [], gradientColor = "black" }) => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
       removeAnimationLoop();
+      // Kill all GSAP animations on this component
+      gsap.killTweensOf(rowRefs.current);
     };
   }, []);
 

@@ -5,13 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 import { Provider } from "react-redux";
 import Store from "../redux/store.js";
+import ErrorBoundary from "./components/common/ErrorBoundary.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={Store}>
-    <BrowserRouter>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
-  </Provider>
+  <ErrorBoundary>
+    <Provider store={Store}>
+      <BrowserRouter>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
+  </ErrorBoundary>
 );

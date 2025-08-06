@@ -15,18 +15,25 @@ function getHeaders(isJson = true) {
 }
 
 export async function loginUser(credentials) {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: getHeaders(),
-    body: JSON.stringify(credentials),
-  });
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(
-      errorData.message || `Login failed: ${res.status} ${res.statusText}`
-    );
+  try {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(credentials),
+    });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(
+        errorData.message || `Login failed: ${res.status} ${res.statusText}`
+      );
+    }
+    return res.json();
+  } catch (error) {
+    if (error.name === "TypeError" && error.message.includes("fetch")) {
+      throw new Error("Network error: Unable to connect to server");
+    }
+    throw error;
   }
-  return res.json();
 }
 
 export async function registerUser(userData) {

@@ -29,6 +29,15 @@ const AuthInitializer = () => {
     }
   }, [dispatch, user, loading, error]);
 
+  // Separate effect to handle token changes
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      setApiAuthToken(token);
+      setAdminAuthToken(token);
+    }
+  }, []);
+
   return null;
 };
 
