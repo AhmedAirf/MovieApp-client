@@ -44,11 +44,18 @@ export const useWatchlist = () => {
   );
 
   const removeItem = useCallback(
-    (mediaId, mediaType) => {
+    async (mediaId, mediaType) => {
       // Optimistically remove from UI
       dispatch(optimisticRemoveFromWatchlist({ mediaId, mediaType }));
       // Then make API call
-      return dispatch(removeFromWatchlist({ mediaId, mediaType }));
+      const result = await dispatch(
+        removeFromWatchlist({ mediaId, mediaType })
+      );
+      // If successful, fetch the updated watchlist to ensure consistency
+      if (removeFromWatchlist.fulfilled.match(result)) {
+        dispatch(fetchWatchlist());
+      }
+      return result;
     },
     [dispatch]
   );

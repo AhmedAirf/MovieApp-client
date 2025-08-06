@@ -205,10 +205,17 @@ const mediaSlice = createSlice({
             .filter(
               (tvshow, index, arr) =>
                 index === 0 || tvshow.id !== arr[index - 1].id
-            );
+            )
+            .map((tvshow) => ({
+              ...tvshow,
+              media_type: "tv", // Ensure TV shows have media_type set
+            }));
           state.tvShows.data = uniqueTvShows;
         } else {
-          state.tvShows.data = action.payload;
+          state.tvShows.data = action.payload.map((item) => ({
+            ...item,
+            media_type: "tv", // Ensure TV shows have media_type set
+          }));
         }
       })
       .addCase(getAllTvShows.rejected, (state, action) => {
@@ -264,7 +271,10 @@ const mediaSlice = createSlice({
       .addCase(getPopularMedia.fulfilled, (state, action) => {
         const { type, data } = action.payload;
         state.popular[type].loading = false;
-        state.popular[type].data = data.results || data;
+        const mediaData = data.results || data;
+        state.popular[type].data = Array.isArray(mediaData)
+          ? mediaData.map((item) => ({ ...item, media_type: type }))
+          : mediaData;
       })
       .addCase(getPopularMedia.rejected, (state, action) => {
         const type =
@@ -282,7 +292,10 @@ const mediaSlice = createSlice({
       .addCase(getTopRatedMedia.fulfilled, (state, action) => {
         const { type, data } = action.payload;
         state.topRated[type].loading = false;
-        state.topRated[type].data = data.results || data;
+        const mediaData = data.results || data;
+        state.topRated[type].data = Array.isArray(mediaData)
+          ? mediaData.map((item) => ({ ...item, media_type: type }))
+          : mediaData;
         // console.log(state.topRated[type].data);
       })
       .addCase(getTopRatedMedia.rejected, (state, action) => {
@@ -299,7 +312,10 @@ const mediaSlice = createSlice({
       })
       .addCase(getAiringToday.fulfilled, (state, action) => {
         state.airingToday.loading = false;
-        state.airingToday.data = action.payload.results || action.payload;
+        const data = action.payload.results || action.payload;
+        state.airingToday.data = Array.isArray(data)
+          ? data.map((item) => ({ ...item, media_type: "tv" }))
+          : data;
       })
       .addCase(getAiringToday.rejected, (state, action) => {
         state.airingToday.loading = false;
@@ -312,7 +328,10 @@ const mediaSlice = createSlice({
       })
       .addCase(getOnTheAir.fulfilled, (state, action) => {
         state.onTheAir.loading = false;
-        state.onTheAir.data = action.payload.results || action.payload;
+        const data = action.payload.results || action.payload;
+        state.onTheAir.data = Array.isArray(data)
+          ? data.map((item) => ({ ...item, media_type: "tv" }))
+          : data;
       })
       .addCase(getOnTheAir.rejected, (state, action) => {
         state.onTheAir.loading = false;

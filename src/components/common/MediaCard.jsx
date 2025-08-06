@@ -7,7 +7,7 @@ const MediaCard = ({
   media,
   genres = [],
   className = "",
-  media_type = "movie" || "tv", // movie or tv
+  media_type = "movie", // Default to movie
   isAuthenticated = false, // Add this prop to check auth status
 }) => {
   const [showAuthAlert, setShowAuthAlert] = useState(false);
@@ -60,6 +60,11 @@ const MediaCard = ({
       ...media,
       media_type: media.media_type || media_type,
     };
+
+    // Additional safety check - if we're on a TV page, ensure media_type is tv
+    if (media_type === "tv" && !media.media_type) {
+      mediaWithType.media_type = "tv";
+    }
 
     toggleWatchlist(mediaWithType);
   };
@@ -124,7 +129,7 @@ const MediaCard = ({
                   onClick={handleWatchlistClick}
                   className={`group rounded-full p-1 sm:p-2 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm ${
                     isInWatchlist(media.id)
-                      ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
+                      ? "bg-green-700    hover:bg-green-800  text-white"
                       : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white"
                   }`}
                 >

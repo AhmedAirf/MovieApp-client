@@ -37,7 +37,8 @@ export const removeFromWatchlist = createAsyncThunk(
   "watchlist/removeFromWatchlist",
   async ({ mediaId, mediaType }, { rejectWithValue }) => {
     try {
-      const data = await removeFromWatchlistAPI(mediaId, mediaType);
+      const normalizedType = mediaType?.toLowerCase();
+      const data = await removeFromWatchlistAPI(mediaId, normalizedType);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -109,13 +110,12 @@ const watchlistSlice = createSlice({
     // Optimistically remove item from watchlist
     optimisticRemoveFromWatchlist: (state, action) => {
       const { mediaId, mediaType } = action.payload;
+      const normalizedType = mediaType?.toLowerCase();
+
       state.items = state.items.filter(
-        (item) =>
-          !(
-            item.id === mediaId &&
-            (!mediaType || item.media_type === mediaType)
-          )
+        (item) => !(item.id === mediaId && item.media_type === normalizedType)
       );
+
       state.totalItems = state.items.length;
       state.watchlistStatus[mediaId] = false;
     },
@@ -186,20 +186,8 @@ const watchlistSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(removeFromWatchlist.fulfilled, (state, action) => {
+      .addCase(removeFromWatchlist.fulfilled, (state) => {
         state.loading = false;
-        const response = action.payload;
-        // The server returns the updated watchlist
-        // Sync the state with the server response to ensure consistency
-        if (response.watchlist) {
-          state.items = response.watchlist;
-          state.totalItems = response.watchlist.length;
-          // Update watchlist status for all items
-          state.watchlistStatus = {};
-          response.watchlist.forEach((item) => {
-            state.watchlistStatus[item.id] = true;
-          });
-        }
       })
       .addCase(removeFromWatchlist.rejected, (state, action) => {
         state.loading = false;

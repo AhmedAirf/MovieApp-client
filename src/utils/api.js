@@ -117,7 +117,7 @@ export async function addToWatchlist(mediaItem) {
 }
 
 export async function removeFromWatchlist(mediaId, mediaType) {
-  const url = `${BASE_URL}/users/watchlist/${mediaId}?media_type=${mediaType}`;
+  const url = `${BASE_URL}/users/watchlist/${mediaId}/${mediaType}`;
 
   const res = await fetch(url, {
     method: "DELETE",
