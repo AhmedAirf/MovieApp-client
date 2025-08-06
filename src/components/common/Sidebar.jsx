@@ -71,7 +71,7 @@ const Sidebar = ({ sidebarOpen }) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-[9999] lg:hidden">
+    <div className="fixed inset-0 z-[99999] lg:hidden">
       {/* Background overlay */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
