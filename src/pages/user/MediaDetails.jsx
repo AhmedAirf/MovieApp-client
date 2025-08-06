@@ -194,14 +194,14 @@ const MediaDetails = () => {
             className={`absolute inset-0 ${
               theme === "dark"
                 ? "bg-gradient-to-t from-black via-black/40 to-transparent"
-                : "bg-gradient-to-t from-white via-white/40 to-transparent"
+                : "bg-gradient-to-t from-white via-white/5 to-transparent"
             }`}
           ></div>
           <div
             className={`absolute inset-0 ${
               theme === "dark"
                 ? "bg-gradient-to-r from-black via-black/30 to-transparent"
-                : "bg-gradient-to-r from-white via-white/30 to-transparent"
+                : "bg-gradient-to-r from-white via-white/5 to-transparent"
             }`}
           ></div>
           <div

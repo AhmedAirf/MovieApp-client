@@ -165,7 +165,8 @@ const PersonDetails = () => {
       }`}
     >
       {/* Hero Section */}
-      <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] overflow-hidden">
+      <div className="relative h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-[80vh] overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0">
           <img
             src={
@@ -173,114 +174,132 @@ const PersonDetails = () => {
                 ? `https://image.tmdb.org/t/p/original${currentPerson.profile_path}`
                 : "/placeholder-person.jpg"
             }
-            alt={currentPerson.name}
-            className="w-full h-full object-cover"
+            alt={`${currentPerson.name} background`}
+            className="w-full h-full object-cover object-center scale-110 blur-sm"
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "/placeholder-person.jpg";
             }}
           />
+          {/* Enhanced gradient overlays for better text readability */}
           <div
             className={`absolute inset-0 ${
-              theme === "dark" ? "bg-black/70" : "bg-white/70"
+              theme === "dark"
+                ? "bg-gradient-to-t from-black/90 via-black/60 to-black/40"
+                : "bg-gradient-to-t from-white/90 via-white/60 to-white/40"
+            }`}
+          ></div>
+          <div
+            className={`absolute inset-0 ${
+              theme === "dark" ? "bg-black/30" : "bg-white/30"
             }`}
           ></div>
         </div>
 
         <div className="relative z-10 h-full flex items-end">
-          <div className="container mx-auto px-4 pb-4 md:pb-8">
-            <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+          <div className="container mx-auto px-4 pb-6 md:pb-12 lg:pb-16">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-12">
+              {/* Profile Image - Enhanced for desktop */}
               <div className="hidden md:block flex-shrink-0">
-                <img
-                  src={
-                    currentPerson.profile_path
-                      ? `https://image.tmdb.org/t/p/w500${currentPerson.profile_path}`
-                      : "/placeholder-person.jpg"
-                  }
-                  alt={currentPerson.name}
-                  className="w-40 md:w-48 lg:w-64 h-60 md:h-72 lg:h-96 object-cover rounded-lg shadow-2xl"
-                  onError={(e) => {
-                    e.target.src = "/placeholder-person.jpg";
-                  }}
-                />
+                <div className="relative group">
+                  <img
+                    src={
+                      currentPerson.profile_path
+                        ? `https://image.tmdb.org/t/p/w500${currentPerson.profile_path}`
+                        : "/placeholder-person.jpg"
+                    }
+                    alt={currentPerson.name}
+                    className="w-48 h-72 md:w-56 md:h-80 lg:w-72 lg:h-96 xl:w-80 xl:h-[30rem] object-cover rounded-xl shadow-2xl border-4 border-white/20 backdrop-blur-sm transform transition-transform duration-300 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.src = "/placeholder-person.jpg";
+                    }}
+                  />
+                  {/* Subtle glow effect */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-red-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
               </div>
 
-              <div className="flex-1 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                  <UserIcon className="h-4 w-4 md:h-5 md:w-5 text-blue-500" />
-                  <span className="text-xs md:text-sm text-gray-400">
+              {/* Text Content - Enhanced for desktop */}
+              <div className="flex-1 text-center md:text-left md:self-end md:pb-4">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-3 md:mb-4">
+                  <UserIcon className="h-5 w-5 md:h-6 md:w-6 text-blue-500" />
+                  <span className="text-sm md:text-base text-gray-400 font-medium">
                     Person
                   </span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 md:mb-4">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-3 md:mb-6 leading-tight tracking-tight drop-shadow-lg">
                   {currentPerson.name}
                 </h1>
 
-                <div className="flex items-center justify-center md:justify-start gap-2 md:gap-4 mb-2 md:mb-4 text-xs sm:text-sm flex-wrap">
-                  {currentPerson.birthday && (
-                    <div className="flex items-center gap-1">
-                      <CalendarIcon className="h-3 w-3 md:h-4 md:w-4" />
-                      <span>
-                        Born: {formatDate(currentPerson.birthday)}
-                        {getAge() && ` (Age ${getAge()})`}
-                      </span>
-                    </div>
-                  )}
-                  {currentPerson.deathday && (
-                    <>
-                      <span className="hidden sm:inline">•</span>
-                      <div className="flex items-center gap-1">
-                        <CalendarIcon className="h-3 w-3 md:h-4 md:w-4" />
-                        <span>Died: {formatDate(currentPerson.deathday)}</span>
+                {/* Key Information - Enhanced layout */}
+                <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
+                  <div className="flex items-center justify-center md:justify-start gap-4 md:gap-6 text-sm md:text-base flex-wrap">
+                    {currentPerson.birthday && (
+                      <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                        <CalendarIcon className="h-4 w-4 md:h-5 md:w-5 text-blue-400" />
+                        <span className="font-medium">
+                          Born: {formatDate(currentPerson.birthday)}
+                          {getAge() && ` (${getAge()} years old)`}
+                        </span>
                       </div>
-                    </>
-                  )}
+                    )}
+                    {currentPerson.deathday && (
+                      <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                        <CalendarIcon className="h-4 w-4 md:h-5 md:w-5 text-red-400" />
+                        <span className="font-medium">
+                          Died: {formatDate(currentPerson.deathday)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-center md:justify-start gap-4 md:gap-6 text-sm md:text-base flex-wrap">
+                    {currentPerson.place_of_birth && (
+                      <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                        <MapPinIcon className="h-4 w-4 md:h-5 md:w-5 text-green-400" />
+                        <span className="font-medium">
+                          {currentPerson.place_of_birth}
+                        </span>
+                      </div>
+                    )}
+                    {currentPerson.known_for_department && (
+                      <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                        <StarIcon className="h-4 w-4 md:h-5 md:w-5 text-yellow-400" />
+                        <span className="font-medium">
+                          {currentPerson.known_for_department}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-center md:justify-start gap-2 md:gap-4 mb-3 md:mb-4 text-xs sm:text-sm flex-wrap">
-                  {currentPerson.place_of_birth && (
-                    <div className="flex items-center gap-1">
-                      <MapPinIcon className="h-3 w-3 md:h-4 md:w-4" />
-                      <span>{currentPerson.place_of_birth}</span>
-                    </div>
-                  )}
-                  {currentPerson.known_for_department && (
-                    <>
-                      <span className="hidden sm:inline">•</span>
-                      <div className="flex items-center gap-1">
-                        <StarIcon className="h-3 w-3 md:h-4 md:w-4" />
-                        <span>{currentPerson.known_for_department}</span>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap justify-center md:justify-start gap-1 md:gap-2 mb-3 md:mb-6">
+                {/* Stats Badges - Redesigned */}
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
                   <span
-                    className={`px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs sm:text-sm ${
+                    className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm font-semibold border backdrop-blur-sm ${
                       theme === "dark"
-                        ? "bg-gray-800 text-gray-200"
-                        : "bg-gray-200 text-gray-800"
+                        ? "bg-gray-800/80 text-gray-200 border-gray-600/50"
+                        : "bg-white/80 text-gray-800 border-gray-300/50"
                     }`}
                   >
                     {getGender()}
                   </span>
                   <span
-                    className={`px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs sm:text-sm ${
+                    className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm font-semibold border backdrop-blur-sm ${
                       theme === "dark"
-                        ? "bg-gray-800 text-gray-200"
-                        : "bg-gray-200 text-gray-800"
+                        ? "bg-red-900/80 text-red-200 border-red-600/50"
+                        : "bg-red-100/80 text-red-800 border-red-300/50"
                     }`}
                   >
                     Popularity: {currentPerson.popularity?.toFixed(1) || "N/A"}
                   </span>
                   {currentPerson.birthday && (
                     <span
-                      className={`px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs sm:text-sm ${
+                      className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm font-semibold border backdrop-blur-sm ${
                         theme === "dark"
-                          ? "bg-gray-800 text-gray-200"
-                          : "bg-gray-200 text-gray-800"
+                          ? "bg-blue-900/80 text-blue-200 border-blue-600/50"
+                          : "bg-blue-100/80 text-blue-800 border-blue-300/50"
                       }`}
                     >
                       Born {new Date(currentPerson.birthday).getFullYear()}
