@@ -12,17 +12,22 @@ const SearchResults = ({
   onHistoryClick,
   maxResults = 6,
   isDesktop = true,
+  userLayout = false,
 }) => {
   const theme = useSelector((state) => state.ui.theme);
   const navigate = useNavigate();
 
   const containerClass = isDesktop
-    ? `absolute top-full left-0 right-0 mt-1 rounded-lg shadow-lg border z-50 max-h-96 overflow-y-auto ${
-        theme === "dark"
+    ? `absolute top-full left-0 right-0 mt-2 rounded-xl shadow-xl border z-[99999] max-h-96 overflow-y-auto backdrop-blur-lg ${
+        userLayout
+          ? theme === "dark"
+            ? "bg-gray-800/95 border-gray-600/50 shadow-2xl"
+            : "bg-white/95 border-gray-200/50 shadow-2xl"
+          : theme === "dark"
           ? "bg-gray-800 border-gray-700"
           : "bg-white border-gray-200"
       }`
-    : `rounded-lg shadow-lg border max-h-96 overflow-y-auto ${
+    : `rounded-xl shadow-lg border max-h-96 overflow-y-auto ${
         theme === "dark"
           ? "bg-gray-800 border-gray-700"
           : "bg-white border-gray-200"
@@ -53,21 +58,36 @@ const SearchResults = ({
           {searchResults.data.slice(0, maxResults).map((item) => (
             <div
               key={item.id}
-              className={`${itemClass} hover:bg-opacity-10 hover:bg-red-500 cursor-pointer flex items-center gap-3 ${
-                theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-50"
+              className={`${itemClass} cursor-pointer flex items-center gap-3 rounded-lg transition-all duration-200 ${
+                userLayout
+                  ? theme === "dark"
+                    ? "hover:bg-gray-700/60 hover:shadow-md"
+                    : "hover:bg-gray-50/80 hover:shadow-sm"
+                  : theme === "dark"
+                  ? "hover:bg-gray-700"
+                  : "hover:bg-gray-50"
               }`}
               onClick={() => onSearchResultClick(item)}
             >
               <img
                 src={
-                  item.poster_path
+                  item.media_type === "person"
+                    ? item.profile_path
+                      ? `https://image.tmdb.org/t/p/w92${item.profile_path}`
+                      : `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiB2aWV3Qm94PSIwIDAgOTIgMTM4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiBmaWxsPSIjMzc0MTUxIi8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iNTAiIHI9IjIwIiBmaWxsPSIjNkI3Mjg0Ii8+CjxwYXRoIGQ9Ik0yMCAxMDBDMjAgODcuMjk3NCAzMC4yOTc0IDc3IDQzIDc3SDQ5QzYxLjcwMjYgNzcgNzIgODcuMjk3NCA3MiAxMDBWMTM4SDIwVjEwMFoiIGZpbGw9IiM2QjcyODQiLz4KPHN2Zz4K`
+                    : item.poster_path
                     ? `https://image.tmdb.org/t/p/w92${item.poster_path}`
-                    : "/placeholder-poster.jpg"
+                    : `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiB2aWV3Qm94PSIwIDAgOTIgMTM4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiBmaWxsPSIjMzc0MTUxIi8+CjxyZWN0IHg9IjIwIiB5PSIzMCIgd2lkdGg9IjUyIiBoZWlnaHQ9IjM4IiByeD0iNCIgZmlsbD0iIzZCNzI4NCIvPgo8Y2lyY2xlIGN4PSI0NiIgY3k9IjkwIiByPSIxMiIgZmlsbD0iIzZCNzI4NCIvPgo8L3N2Zz4K`
                 }
                 alt={item.title || item.name}
-                className={`${imageClass} object-cover rounded`}
+                className={`${imageClass} object-cover rounded ${
+                  item.media_type === "person" ? "rounded-full" : ""
+                }`}
                 onError={(e) => {
-                  e.target.src = "/placeholder-poster.jpg";
+                  e.target.src =
+                    item.media_type === "person"
+                      ? `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiB2aWV3Qm94PSIwIDAgOTIgMTM4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiBmaWxsPSIjMzc0MTUxIi8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iNTAiIHI9IjIwIiBmaWxsPSIjNkI3Mjg0Ii8+CjxwYXRoIGQ9Ik0yMCAxMDBDMjAgODcuMjk3NCAzMC4yOTc0IDc3IDQzIDc3SDQ5QzYxLjcwMjYgNzcgNzIgODcuMjk3NCA3MiAxMDBWMTM4SDIwVjEwMFoiIGZpbGw9IiM2QjcyODQiLz4KPHN2Zz4K`
+                      : `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiB2aWV3Qm94PSIwIDAgOTIgMTM4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iOTIiIGhlaWdodD0iMTM4IiBmaWxsPSIjMzc0MTUxIi8+CjxyZWN0IHg9IjIwIiB5PSIzMCIgd2lkdGg9IjUyIiBoZWlnaHQ9IjM4IiByeD0iNCIgZmlsbD0iIzZCNzI4NCIvPgo8Y2lyY2xlIGN4PSI0NiIgY3k9IjkwIiByPSIxMiIgZmlsbD0iIzZCNzI4NCIvPgo8L3N2Zz4K`;
                 }}
               />
               <div className="flex-1 min-w-0">
@@ -83,20 +103,28 @@ const SearchResults = ({
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  {item.media_type === "tv" ? "TV Show" : "Movie"} •{" "}
-                  {item.release_date || item.first_air_date
-                    ? new Date(
-                        item.release_date || item.first_air_date
-                      ).getFullYear()
-                    : "N/A"}
+                  {item.media_type === "person"
+                    ? `Person • ${item.known_for_department || "Actor"}`
+                    : item.media_type === "tv"
+                    ? "TV Show"
+                    : "Movie"}
+                  {item.media_type !== "person" &&
+                    (item.release_date || item.first_air_date) &&
+                    ` • ${new Date(
+                      item.release_date || item.first_air_date
+                    ).getFullYear()}`}
                 </div>
               </div>
             </div>
           ))}
           {searchResults.data.length > maxResults && (
             <div
-              className={`p-3 text-center cursor-pointer border-t ${
-                theme === "dark"
+              className={`p-3 text-center cursor-pointer border-t rounded-b-xl transition-all duration-200 ${
+                userLayout
+                  ? theme === "dark"
+                    ? "text-red-400 hover:bg-gray-700/60 border-gray-600/50 hover:text-red-300"
+                    : "text-red-600 hover:bg-red-50/80 border-gray-200/50 hover:text-red-700"
+                  : theme === "dark"
                   ? "text-red-400 hover:bg-gray-700 border-gray-700"
                   : "text-red-600 hover:bg-gray-50 border-gray-200"
               }`}
@@ -104,7 +132,9 @@ const SearchResults = ({
                 navigate(`/search?q=${encodeURIComponent(currentQuery)}`);
               }}
             >
-              View all {searchResults.data.length} results
+              <span className="font-medium">
+                View all {searchResults.data.length} results
+              </span>
             </div>
           )}
         </>

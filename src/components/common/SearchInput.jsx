@@ -23,19 +23,32 @@ const SearchInput = ({
   const dispatch = useDispatch();
 
   return (
-    <div className="relative search-container search-input-area">
+    <div className="relative search-container search-input-area group z-[99999]">
       <form
         onSubmit={onSearchSubmit}
         className="relative flex items-center w-full lg:w-auto"
       >
+        {userLayout && (
+          <MagnifyingGlassIcon
+            className={`absolute left-3 h-5 w-5 pointer-events-none ${
+              theme === "dark" ? "text-gray-400" : "text-gray-500"
+            }`}
+          />
+        )}
         <input
           type="text"
-          className={`border rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-red-500 w-full lg:w-64 transition-all duration-200 ${
-            theme === "dark"
-              ? "border-gray-700 bg-gray-900 text-white"
-              : "border-gray-300 bg-white text-gray-900"
+          className={`border rounded-lg py-2.5 focus:outline-none focus:ring-2 focus:ring-red-500 w-full lg:w-72 transition-all duration-200 shadow-sm ${
+            userLayout ? "pl-10 pr-12" : "px-4"
+          } ${
+            userLayout
+              ? theme === "dark"
+                ? "border-gray-600 bg-gray-800/50 text-white placeholder-gray-400 focus:bg-gray-800 focus:border-red-500"
+                : "border-gray-300 bg-white/80 text-gray-900 placeholder-gray-500 focus:bg-white focus:border-red-500 backdrop-blur-sm"
+              : theme === "dark"
+              ? "border-gray-700 bg-gray-900 text-white placeholder-gray-400"
+              : "border-gray-300 bg-white text-gray-900 placeholder-gray-500"
           }`}
-          placeholder="Search movies, series..."
+          placeholder="Search movies, shows, people..."
           value={currentQuery}
           onChange={onSearchChange}
           onFocus={() => dispatch(setShowResults(true))}
@@ -45,12 +58,14 @@ const SearchInput = ({
           variant="text"
           size="sm"
           aria-label="Close search"
-          className={`absolute right-1 ${
-            theme === "dark"
-              ? "text-white"
-              : userLayout
-              ? "text-gray-900"
-              : "text-gray-600"
+          className={`absolute right-2 rounded-full hover:bg-gray-100/20 transition-all duration-200 ${
+            userLayout
+              ? theme === "dark"
+                ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-200/50"
+              : theme === "dark"
+              ? "text-white hover:text-gray-300"
+              : "text-gray-600 hover:text-gray-800"
           }`}
           onClick={onClose}
         >
@@ -69,6 +84,7 @@ const SearchInput = ({
           onHistoryClick={onHistoryClick}
           maxResults={6}
           isDesktop={true}
+          userLayout={userLayout}
         />
       )}
     </div>

@@ -25,11 +25,11 @@ import ProfileMenu from "./ProfileMenu";
 import SearchInput from "./SearchInput";
 import MobileSearchOverlay from "./MobileSearchOverlay";
 import NavigationList from "./NavigationList";
+import Sidebar from "./Sidebar";
 
 const PublicHeader = ({ transparent = false, userLayout = false }) => {
   const [openNav, setOpenNav] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  
   const { isAuthenticated } = useSelector(selectAuth);
   const theme = useSelector((state) => state.ui.theme);
   const sidebarOpen = useSelector((state) => state.ui.sidebarOpen);
@@ -78,8 +78,13 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
   };
 
   const handleSearchResultClick = (item) => {
-    const mediaType = item.media_type || (item.first_air_date ? "tv" : "movie");
-    navigate(`/media/${mediaType}/${item.id}`);
+    if (item.media_type === "person") {
+      navigate(`/person/${item.id}`);
+    } else {
+      const mediaType =
+        item.media_type || (item.first_air_date ? "tv" : "movie");
+      navigate(`/media/${mediaType}/${item.id}`);
+    }
     setShowSearch(false);
     dispatch(clearResults());
   };
@@ -112,13 +117,16 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
   // Close search results when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".search-container") && !event.target.closest(".search-input-area")) {
+      if (
+        !event.target.closest(".search-container") &&
+        !event.target.closest(".search-input-area")
+      ) {
         dispatch(setShowResults(false));
       }
     };
 
     const handleEscapeKey = (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         dispatch(setShowResults(false));
         setShowSearch(false);
         clearSearchHandler();
@@ -133,25 +141,8 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
     };
   }, [dispatch, clearSearchHandler]);
 
-  // Sidebar component (simplified)
-  const sidebar = sidebarOpen && (
-    <div
-      className="fixed inset-0 z-40 lg:hidden"
-      onClick={() => dispatch(toggleSidebar())}
-    >
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      <aside className="relative z-50 w-64 h-full bg-white dark:bg-gray-800 shadow-lg">
-        <div className="p-4">
-          <h2 className="text-lg font-semibold">Menu</h2>
-          <NavigationList 
-            transparent={transparent} 
-            userLayout={userLayout} 
-            onNavClick={() => dispatch(toggleSidebar())} 
-          />
-        </div>
-      </aside>
-    </div>
-  );
+  // Enhanced Sidebar component
+  const sidebar = <Sidebar sidebarOpen={sidebarOpen} />;
 
   return (
     <>
@@ -170,9 +161,9 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
           userLayout={userLayout}
         />
       )}
-      
+
       <Navbar
-        className={`max-w-full rounded-none border-none px-4 py-2 lg:px-8 lg:py-4 ${
+        className={`max-w-full rounded-none border-none px-4 py-2 lg:px-8 lg:py-4 relative z-[99990] ${
           transparent
             ? "bg-transparent backdrop-blur-none border-b border-white/20"
             : theme === "dark"
@@ -199,7 +190,7 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
             >
               <Bars3Icon className="h-6 w-6" />
             </IconButton>
-            
+
             {/* Logo */}
             <div className="flex items-center">
               <FilmIcon className="h-8 w-8 text-red-500 mr-2" />
@@ -219,10 +210,10 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex flex-1 justify-center px-4">
-            <NavigationList 
-              transparent={transparent} 
-              userLayout={userLayout} 
-              onNavClick={() => setOpenNav(false)} 
+            <NavigationList
+              transparent={transparent}
+              userLayout={userLayout}
+              onNavClick={() => setOpenNav(false)}
             />
           </div>
 
@@ -250,7 +241,7 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
                 <MoonIcon className="h-6 w-6" />
               )}
             </IconButton>
-            
+
             {/* Desktop search input */}
             <div className="hidden lg:block">
               {showSearch ? (
@@ -288,7 +279,7 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
                 </IconButton>
               )}
             </div>
-            
+
             {/* Mobile search icon */}
             <div className="lg:hidden">
               <IconButton
@@ -309,7 +300,7 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </IconButton>
             </div>
-            
+
             {/* Profile menu or sign in button */}
             {isAuthenticated ? (
               <ProfileMenu />
@@ -360,10 +351,10 @@ const PublicHeader = ({ transparent = false, userLayout = false }) => {
               </IconButton>
             )}
 
-            <NavigationList 
-              transparent={transparent} 
-              userLayout={userLayout} 
-              onNavClick={() => setOpenNav(false)} 
+            <NavigationList
+              transparent={transparent}
+              userLayout={userLayout}
+              onNavClick={() => setOpenNav(false)}
             />
 
             {!isAuthenticated && (
