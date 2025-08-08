@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import PublicFooter from "../components/common/PublicFooter";
+import PublicFooter from "../components/common/PublicFooterr";
 import PublicHeader from "../components/common/PublicHeader";
 
 const PuplicLayout = () => {
