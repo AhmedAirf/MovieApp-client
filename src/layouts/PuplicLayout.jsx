@@ -1,11 +1,14 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import PublicFooter from "../components/common/publicFooter";
+import PublicFooter from "../components/common/PublicFooter";
+import PublicHeader from "../components/common/PublicHeader";
 
 const PuplicLayout = () => {
   const location = useLocation();
-
+  const hideHeader = ["/login", "/register", "/movies", "/tv", "/"].includes(
+    location.pathname
+  );
   const hideFooter = ["/login", "/register"].includes(location.pathname);
   const theme = useSelector((state) => state.ui.theme);
 
@@ -17,6 +20,7 @@ const PuplicLayout = () => {
           : "bg-white text-gray-900"
       } min-h-screen`}
     >
+      {!hideHeader && <PublicHeader />}
       <main>
         <Outlet />
       </main>

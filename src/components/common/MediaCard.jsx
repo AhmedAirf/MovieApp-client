@@ -8,7 +8,7 @@ const MediaCard = ({
   genres = [],
   className = "",
   media_type = "movie", // Default to movie
-  isAuthenticated = false, // Add this prop to check auth status
+  isAuthenticated = false, // Default to false for public access
 }) => {
   const [showAuthAlert, setShowAuthAlert] = useState(false);
   const { toggleWatchlist, isInWatchlist } = useWatchlist();
@@ -38,12 +38,9 @@ const MediaCard = ({
     genreNames = media.genres;
   }
 
-  const handleMediaClick = (e) => {
-    if (!isAuthenticated) {
-      e.preventDefault();
-      setShowAuthAlert(true);
-    }
-    // If authenticated, the link will navigate normally
+  const handleMediaClick = () => {
+    // Allow public access to media details - no authentication required
+    // The link will navigate normally for all users
   };
 
   const handleWatchlistClick = (e) => {

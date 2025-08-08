@@ -21,6 +21,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 import { useWatchlist } from "../../hooks/useWatchlist";
+import UnauthenticatedAlert from "../../components/common/UnauthenticatedAlert";
 
 const MediaDetails = () => {
   const { id, type } = useParams();
@@ -39,8 +40,9 @@ const MediaDetails = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showAuthAlert, setShowAuthAlert] = useState(false);
 
-  // Watchlist functionality
+  // Watchlist functionality - only for authenticated users
   const { toggleWatchlist, isInWatchlist, fetchUserWatchlist } = useWatchlist();
 
   useEffect(() => {
@@ -117,7 +119,7 @@ const MediaDetails = () => {
 
   const handleWatchlistToggle = () => {
     if (!isAuthenticated) {
-      alert("Please sign in to add items to your watchlist");
+      setShowAuthAlert(true);
       return;
     }
 
@@ -315,12 +317,11 @@ const MediaDetails = () => {
                   )}
                   <button
                     onClick={handleWatchlistToggle}
-                    disabled={!isAuthenticated}
                     className={`group flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-6 md:py-3 rounded md:rounded-lg text-xs md:text-base font-medium md:font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/20 backdrop-blur-sm ${
                       !isAuthenticated
-                        ? "bg-gray-500 text-gray-300 cursor-not-allowed opacity-50"
+                        ? "bg-gray-600 hover:bg-gray-700 text-white"
                         : isInWatchlist(currentMedia.id)
-                        ? " bg-green-700    hover:bg-green-800  text-white"
+                        ? "bg-green-700 hover:bg-green-800 text-white"
                         : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white"
                     }`}
                   >
@@ -786,7 +787,6 @@ const MediaDetails = () => {
                       media={item}
                       media_type={type}
                       className="w-full"
-                      isAuthenticated={isAuthenticated}
                     />
                   ))}
                 </div>
@@ -824,6 +824,14 @@ const MediaDetails = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Unauthenticated Alert */}
+      {showAuthAlert && (
+        <UnauthenticatedAlert
+          onClose={() => setShowAuthAlert(false)}
+          message="Please sign in to add items to your watchlist."
+        />
       )}
     </div>
   );

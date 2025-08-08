@@ -43,14 +43,6 @@ const MediaCarousel = ({
   // Avoid rendering if no items
   if (!items || items.length === 0) return null;
 
-  const handleAuthAlert = () => {
-    if (!isAuthenticated) {
-      setShowAuthAlert(true);
-      return false;
-    }
-    return true;
-  };
-
   const handleWatchlistClick = () => {
     if (!isAuthenticated) {
       setShowAuthAlert(true);
@@ -143,34 +135,11 @@ const MediaCarousel = ({
 
               {/* Buttons */}
               <div className="absolute bottom-12 md:bottom-6 left-4 md:left-8 z-30 flex sm:flex-row gap-3 md:gap-4 lg:gap-6 sm:w-auto max-w-xs sm:max-w-none">
-                {isAuthenticated ? (
-                  <Link
-                    to={`/media/${mediaType}/${item.id}`}
-                    className="w-full sm:w-auto"
-                  >
-                    <Button className="group w-full sm:w-auto bg-blue-gray-400 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm">
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="relative">
-                        Details
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                      </span>
-                    </Button>
-                  </Link>
-                ) : (
-                  <Button
-                    onClick={handleAuthAlert}
-                    className="group w-full sm:w-auto bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm"
-                  >
+                <Link
+                  to={`/media/${mediaType}/${item.id}`}
+                  className="w-full sm:w-auto"
+                >
+                  <Button className="group w-full sm:w-auto bg-blue-gray-400 text-white text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 border border-white/20 backdrop-blur-sm">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse"
                       fill="currentColor"
@@ -187,7 +156,8 @@ const MediaCarousel = ({
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                     </span>
                   </Button>
-                )}
+                </Link>
+
                 <Button
                   onClick={handleWatchlistClick}
                   size="sm"

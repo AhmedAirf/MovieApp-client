@@ -31,6 +31,8 @@ const AppRoutes = () => (
       <Route path="/not-authorized" element={<NotAuthorized />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/tv" element={<Tv />} />
+      <Route path="/media/:type/:id" element={<MediaDetails />} />
+      <Route path="/person/:id" element={<PersonDetails />} />
     </Route>
 
     {/* User routes (protected) */}
@@ -43,8 +45,6 @@ const AppRoutes = () => (
     >
       <Route path="/profile" element={<Profile />} />
       <Route path="/watchlist" element={<Watchlist />} />
-      <Route path="/media/:type/:id" element={<MediaDetails />} />
-      <Route path="/person/:id" element={<PersonDetails />} />
     </Route>
 
     {/* Admin routes (protected, admin only) */}

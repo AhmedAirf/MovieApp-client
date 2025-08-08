@@ -93,7 +93,6 @@ const Movies = () => {
                 media={movie}
                 genres={genres}
                 media_type="movie"
-                isAuthenticated={isAuthenticated}
               />
             ))}
           </div>
