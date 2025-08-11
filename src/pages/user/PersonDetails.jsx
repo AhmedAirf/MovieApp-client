@@ -17,11 +17,13 @@ import {
   ChevronUpIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import { selectIsAuthenticated } from "../../../redux/slices/authslice";
 
 const PersonDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const { currentPerson, credits, loading, error } = useSelector(
     (state) => state.mediaDetails
   );
@@ -459,6 +461,7 @@ const PersonDetails = () => {
                               work.media_type || (work.title ? "movie" : "tv")
                             }
                             theme={theme}
+                            isAuthenticated={isAuthenticated}
                             className="w-full"
                           />
                         </div>
@@ -554,6 +557,7 @@ const PersonDetails = () => {
                             work.media_type || (work.title ? "movie" : "tv")
                           }
                           theme={theme}
+                          isAuthenticated={isAuthenticated}
                           className="w-full"
                         />
                         {work.character && (
@@ -605,6 +609,7 @@ const PersonDetails = () => {
                             work.media_type || (work.title ? "movie" : "tv")
                           }
                           theme={theme}
+                          isAuthenticated={isAuthenticated}
                           className="w-full mb-2"
                         />
                         <p className="text-xs md:text-sm text-gray-500 font-medium">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  logout,
+  logoutUser,
   selectUser,
   updateUser,
 } from "../../../redux/slices/authslice";
@@ -35,7 +35,7 @@ const Profile = () => {
   }
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
   };
 
   const handleEditName = () => {

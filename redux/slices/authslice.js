@@ -6,6 +6,7 @@ import {
   setAuthToken,
 } from "../../src/utils/api";
 import { setToken, getToken, removeToken } from "../../src/utils/helpers";
+import { clearWatchlistState } from "./watchlistSlice";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -54,6 +55,23 @@ export const loadUser = createAsyncThunk(
     }
   }
 );
+
+// Add logout thunk that handles both auth logout and watchlist clearing
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { dispatch }) => {
+    // Clear watchlist state first
+    dispatch(clearWatchlistState());
+
+    // Clear token from localStorage and API
+    removeToken();
+    setAuthToken(null);
+
+    // Return success (the reducer will handle the state updates)
+    return { success: true };
+  }
+);
+
 // const token = getToken();
 
 const initialState = {
@@ -68,17 +86,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      // Clear token from localStorage and API
-      removeToken();
-      setAuthToken(null);
-
-      // Reset state
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.error = null;
-    },
     clearError: (state) => {
       state.error = null;
     },
@@ -137,11 +144,18 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         state.token = null;
+      })
+      // Logout User
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = null;
       });
   },
 });
 
-export const { logout, clearError, updateUser } = authSlice.actions;
+export const { clearError, updateUser } = authSlice.actions;
 
 // Selectors
 export const selectAuth = (state) => state.auth;

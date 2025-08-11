@@ -786,6 +786,7 @@ const MediaDetails = () => {
                       key={item.id}
                       media={item}
                       media_type={type}
+                      isAuthenticated={isAuthenticated}
                       className="w-full"
                     />
                   ))}

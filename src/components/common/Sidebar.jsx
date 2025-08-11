@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../redux/slices/uiSlice";
-import { selectAuth, logout } from "../../../redux/slices/authslice";
+import { selectAuth, logoutUser } from "../../../redux/slices/authslice";
 import {
   IconButton,
   Typography,
@@ -44,7 +44,7 @@ const Sidebar = ({ sidebarOpen }) => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     handleClose();
   };
 

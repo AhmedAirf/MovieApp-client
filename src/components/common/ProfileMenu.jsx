@@ -10,7 +10,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectAuth, logout } from "../../../redux/slices/authslice";
+import { selectAuth, logoutUser } from "../../../redux/slices/authslice";
 import { useWatchlist } from "../../hooks/useWatchlist";
 
 const ProfileMenu = () => {
@@ -40,7 +40,7 @@ const ProfileMenu = () => {
 
   const handleSignOut = () => {
     closeMenu();
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate("/login");
   };
 

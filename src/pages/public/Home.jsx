@@ -87,6 +87,7 @@ const Home = () => {
           loading={trending.loading}
           genres={genres.data}
           mediaType="movie"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={9}
           showRanking={true}
@@ -100,6 +101,7 @@ const Home = () => {
           loading={popular.movie?.loading}
           genres={genres.data}
           mediaType="movie"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
@@ -111,6 +113,7 @@ const Home = () => {
           loading={popular.tv?.loading}
           genres={genres.data}
           mediaType="tv"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
@@ -122,6 +125,7 @@ const Home = () => {
           loading={topRated.movie?.loading}
           genres={genres.data}
           mediaType="movie"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
@@ -133,6 +137,7 @@ const Home = () => {
           loading={nowPlaying?.loading}
           genres={genres.data}
           mediaType="movie"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
@@ -144,6 +149,7 @@ const Home = () => {
           loading={upcoming?.loading}
           genres={genres.data}
           mediaType="movie"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
@@ -155,6 +161,7 @@ const Home = () => {
           loading={airingToday?.loading}
           genres={genres.data}
           mediaType="tv"
+          isAuthenticated={isAuthenticated}
           theme={theme}
           maxItems={20}
         />
