@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  loginUser,
-  registerUser,
-  fetchUserProfile,
-  setAuthToken,
-} from "../../src/utils/api";
+import { jwtDecode } from "jwt-decode";
+import { loginUser, registerUser, setAuthToken } from "../../src/utils/api";
 import { setToken, getToken, removeToken } from "../../src/utils/helpers";
 import { clearWatchlistState } from "./watchlistSlice";
 
@@ -13,10 +9,16 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await loginUser(credentials);
-      const { token, user } = response;
+      const { token } = response;
       setToken(token);
       setAuthToken(token);
-      return { user, token };
+      let userFromToken = null;
+      try {
+        userFromToken = jwtDecode(token);
+      } catch (e) {
+        // If decoding fails, still proceed with token only
+      }
+      return { user: userFromToken, token };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -28,10 +30,16 @@ export const register = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await registerUser(userData);
-      const { token, user } = response;
+      const { token } = response;
       setToken(token);
       setAuthToken(token);
-      return { user, token };
+      let userFromToken = null;
+      try {
+        userFromToken = jwtDecode(token);
+      } catch (e) {
+        // If decoding fails still proceed with token only
+      }
+      return { user: userFromToken, token };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -46,8 +54,9 @@ export const loadUser = createAsyncThunk(
       if (!token) throw new Error("No token found");
 
       setAuthToken(token);
-      const user = await fetchUserProfile();
-      return user;
+      // Decode user info from token instead of hitting profile endpoint
+      const decoded = jwtDecode(token);
+      return decoded;
     } catch (error) {
       removeToken();
       setAuthToken(null);
@@ -104,7 +113,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         // Normalize: store user object directly
-        state.user = action.payload.user?.user || action.payload.user;
+        state.user = action.payload.user?.user || action.payload.user || null;
         state.token = action.payload.token;
       })
       .addCase(login.rejected, (state, action) => {
@@ -120,7 +129,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         // Normalize: store user object directly
-        state.user = action.payload.user?.user || action.payload.user;
+        state.user = action.payload.user?.user || action.payload.user || null;
         state.token = action.payload.token;
       })
       .addCase(register.rejected, (state, action) => {
@@ -136,7 +145,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         // Normalize: store user object directly
-        state.user = action.payload?.user || action.payload;
+        state.user = action.payload?.user || action.payload || null;
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;
